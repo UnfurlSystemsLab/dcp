@@ -148,13 +148,13 @@ Before completing a spec change:
 
 ## 11. Current Transitional State
 
-The current repository was seeded from earlier `unfurl-dcp` documents. Until the
-new spec-first structure is created, treat these files as the source material to
-be reorganized, not as the final information architecture:
+The current repository was seeded from earlier `unfurl-dcp` documents. The
+spec-first structure now exists, but these files remain source material while
+the public pages are refined:
 
 - `docs/HLD-C-dcp-v0.2-internal.md`
 - `docs/HLD-C2-dcp-schema-spec-updated.md`
 
 When restructuring, preserve meaning first, then improve shape. Do not delete
-technical content merely because it has not yet been moved into the final
+technical content merely because it has not yet been fully reconciled with the
 spec/index/schema/element/example layout.

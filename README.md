@@ -21,15 +21,22 @@ in [`UnfurlSystemsLab/unfurl-dcp`](https://github.com/UnfurlSystemsLab/unfurl-dc
 
 ## Start Here
 
-1. [DCP v0.2 Internal Specification](docs/HLD-C-dcp-v0.2-internal.md)
-2. [DCP Schema Specification](docs/HLD-C2-dcp-schema-spec-updated.md)
-3. [Java implementation repository](https://github.com/UnfurlSystemsLab/unfurl-dcp)
+1. [DCP Standards Support](docs/DCP-STANDARDS-SUPPORT.md)
+2. [DCP Core Specification](docs/specs/DCP-CORE.md)
+3. [DCP Claim Specification](docs/specs/DCP-CLAIM.md)
+4. [DCP Schema Directory](docs/schemas/)
+5. [DCP Element Directory](docs/elements/)
+6. [Java implementation repository](https://github.com/UnfurlSystemsLab/unfurl-dcp)
 
 ## Status
 
 DCP is a draft specification. The Java implementation is the executable proof of
 the current draft, but the protocol remains open to correction where real
 adapter work exposes gaps.
+
+The earlier source documents remain in `docs/HLD-C-*.md` while the public
+specification is being split into smaller spec, schema, element, example, and
+version documents.
 
 ## Participate
 

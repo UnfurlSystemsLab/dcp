@@ -1,0 +1,67 @@
+schema_id: dcp.composition_contract
+schema_version: 0.2.0-draft
+owning_spec: ../specs/DCP-CONTRACT.md
+description: Plane 2 frozen composition artifact.
+
+required:
+  - contract_id
+  - contract_version
+  - participants
+  - accepted_bindings
+  - rejected_needs
+  - policy_context
+  - trust
+  - metadata
+
+properties:
+  contract_id: { type: uri }
+  contract_version: { type: semver }
+  participants:
+    type: list
+    min_items: 1
+    item:
+      required: [claim_uri, claim_version, role]
+      properties:
+        claim_uri: { type: uri }
+        claim_version: { type: semver }
+        role:
+          type: enum
+          values: [consumer, provider, aggregate, observer]
+
+  accepted_bindings:
+    type: list
+    item:
+      required: [consumer_claim, need, provider_claim, offer, offer_version]
+      properties:
+        consumer_claim: { type: uri }
+        need: { type: string }
+        provider_claim: { type: uri }
+        offer: { type: string }
+        offer_version: { type: semver }
+        binding_constraints: { type: map, required: false }
+
+  rejected_needs:
+    type: list
+    item:
+      required: [consumer_claim, need, reason]
+
+  conflicts_resolved:
+    type: list
+    required: false
+
+  child_contracts:
+    type: list
+    required: false
+    description: Referenced child DCP contracts for aggregate composition.
+
+  runtime_binding_expectations:
+    type: map
+    required: false
+
+  policy_context: { type: map }
+  trust:
+    required: [tier, provenance]
+  signatures:
+    type: list
+    required: false
+  metadata: { type: map }

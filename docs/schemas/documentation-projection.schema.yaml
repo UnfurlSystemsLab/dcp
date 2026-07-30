@@ -1,0 +1,32 @@
+schema_id: dcp.documentation_projection
+schema_version: 0.2.0-draft
+owning_spec: ../specs/DCP-DOCUMENTATION.md
+description: Generated documentation derived from accepted DCP capability surfaces.
+
+required:
+  - projection_id
+  - source_contract
+  - source_binding
+  - outputs
+  - filters
+  - metadata
+
+properties:
+  projection_id: { type: uri }
+  source_contract: { type: uri }
+  source_binding: { type: uri }
+  outputs:
+    type: list
+    item:
+      required: [kind, path]
+      properties:
+        kind:
+          type: enum
+          values: [openapi, asyncapi, mcp, human_summary]
+        path: { type: string }
+  filters:
+    properties:
+      tenant_id: { type: string, required: false }
+      environment: { type: string, required: false }
+      accepted_capabilities_only: { type: bool }
+  metadata: { type: map }

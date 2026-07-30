@@ -1,7 +1,7 @@
 # HLD-C2 — DCP Schema Specification
 
 **Document status:** Concrete schema specification. Downstream of HLD-C (DCP v0.2 internal). 
-**Audience:** Internal. The field-by-field definition that `unfurl-dcp` implements and validates against.
+**Audience:** Internal. The field-by-field definition owned by the `dcp` specification repository and implemented by `unfurl-dcp`.
 **Decisions inherited as settled (from HLD-C §11, resolved):**
 1. **state/decisions fold under each concern** — no separate `state_owned`/`decisions_owned` top-level lists.
 2. **Invalidation:** hard-fail at runtime, re-negotiate at design-time. No runtime self-heal.
@@ -730,7 +730,7 @@ Rules:
 
 ## H. Validation Rules Summary
 
-`unfurl-dcp` MUST enforce, at minimum:
+DCP-conformant implementations, including `unfurl-dcp`, MUST enforce, at minimum:
 
 Claim:
 - All required sections present; `refusals` and `boundary_principles` non-empty.
@@ -774,7 +774,7 @@ Cross-schema:
 
 - **Federated flywheel mechanics** (consent, scrubbing, local-vs-general model contribution) — deferred per settled #4; needs product/legal input, does not block this schema.
 - **Trust policy** — the protocol records `trust.tier`; the *rules* for what a deployment does with `self`-tier contracts are policy, specified outside DCP.
-- **Wire-level encoding details** beyond "YAML/JSON equivalent" — the `unfurl-dcp` repo build spec covers serialization specifics.
+- **Wire-level encoding details** beyond "YAML/JSON equivalent" — the `unfurl-dcp` implementation repo covers serialization specifics.
 - **The exact `details` maps** for each transport kind and interface kind — enumerated in the repo build spec against real offers.
 - **Provider-specific runtime adapters** — runtime binding defines the portable shape; concrete adapters for Kubernetes, Docker Compose, Azure Container Apps, Helm, or external SaaS are specified separately.
 
@@ -811,5 +811,5 @@ Compatibility rule:
 
 ## K. What comes next
 
-- **`unfurl-dcp` repo build spec** — the Claude-Code-ready phased build plan: schema models, validators, the resolver integration, the question-schema renderer (human + model), forbidden imports, acceptance criteria. Built against these schemas.
-- The claim, runtime binding, and manifest schemas here are specified together (HLD-C §4); the repo build spec MUST generate both from one shared component-description definition, never independently.
+- **`unfurl-dcp` implementation repo** — the Java schema models, validators, resolver integration, question-schema renderer, forbidden imports, and acceptance criteria. Built against these schemas.
+- The claim, runtime binding, and manifest schemas here are specified together (HLD-C §4); implementations MUST generate both from one shared component-description definition, never independently.

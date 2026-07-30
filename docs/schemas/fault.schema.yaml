@@ -1,0 +1,59 @@
+schema_id: dcp.fault
+schema_version: 0.2.0-draft
+owning_spec: ../specs/DCP-FAULTS.md
+description: Declared DCP-visible fault vocabulary and propagation policy.
+
+required:
+  - code
+  - description
+  - severity
+  - affects
+  - evidence
+  - propagation
+
+properties:
+  code: { type: string, format: kebab-case }
+  description: { type: string }
+  severity:
+    type: enum
+    values: [info, warning, degraded, blocking, critical]
+
+  affects:
+    type: list
+    item:
+      required: [kind, name]
+      properties:
+        kind:
+          type: enum
+          values: [need, offer, dependency, constraint, port, service_expectation]
+        name: { type: string }
+
+  evidence:
+    type: list
+    min_items: 1
+    item:
+      required: [signal, description]
+      properties:
+        signal: { type: string }
+        description: { type: string }
+
+  propagation:
+    required: [default_action]
+    properties:
+      default_action:
+        type: enum
+        values: [propagate, suppress, reject]
+      parent_visible_when:
+        type: list
+        required: false
+
+  remediation:
+    type: list
+    required: false
+    item:
+      required: [action, boundary]
+      properties:
+        action: { type: string }
+        boundary:
+          type: enum
+          values: [within_claim, operator_required, renegotiation_required]

@@ -1,0 +1,102 @@
+identity:
+  uri: dcp://components/example-search-tool
+  name: Example Search Tool
+  kind: component
+  version: 0.1.0
+  publisher: Unfurl Systems Lab
+  publisher_uri: https://github.com/UnfurlSystemsLab
+
+domain:
+  summary: Provides a bounded search capability over a configured document index.
+  concerns:
+    - concern: document-search
+      description: Finds matching documents for a caller-provided query.
+      scope_notes: Owns retrieval from the configured index, not interpretation of retrieved content.
+      owns_state:
+        - resource: search-index-reference
+          description: Identifier for the configured index.
+          sensitivity: internal
+      owns_decisions:
+        - decision: ranking
+          description: Ranks candidate documents according to the configured search strategy.
+          authority: exclusive
+  boundary_principles:
+    - The component answers retrieval questions only for the configured index.
+    - The component does not decide whether a caller is authorized to see a document.
+
+refusals:
+  - concern: authorization
+    rationale: Authorization is owned by the caller's policy system.
+    owned_by: external policy engine
+  - concern: content-interpretation
+    rationale: Summarization or interpretation belongs to a reasoning component.
+    owned_by: intelligent component
+
+dependencies:
+  required:
+    - need: document-index
+      description: A configured document index must exist before search can run.
+      accepted_providers:
+        - kind: infrastructure
+          required_properties: [queryable, tenant-scoped]
+  recommended:
+    - need: telemetry
+      description: Query latency and error counts should be observable.
+      benefits_if_present: Operators can detect slow or failing searches.
+  forbidden: []
+
+offers:
+  - capability: document.search
+    description: Search configured documents and return matching document references.
+    consumer_access: named_components_only
+    interface:
+      kind: http_api
+      details:
+        method: POST
+        path: /search
+        request_shape: SearchRequest
+        response_shape: SearchResponse
+    stability: evolving
+    version: 0.1.0
+
+conflict_resolution:
+  overlapping_concerns:
+    - concern: document-search
+      ownership_position: exclusive
+      resolution_guidance: Exclusive for one configured index namespace; multiple search providers may coexist for different namespaces.
+  precedence_rules: []
+  requires_human_escalation: true
+
+integration_ports:
+  authentication:
+    required: true
+    accepted_modes: [jwt, oidc]
+  authorization:
+    required: true
+    decision_owner: external_policy
+  telemetry:
+    required: true
+    signals: [logs, metrics, traces]
+    correlation_id_required: true
+
+faults:
+  - code: index-unavailable
+    description: The configured search index cannot be reached.
+    severity: blocking
+    affects:
+      - kind: offer
+        name: document.search
+    evidence:
+      - signal: index_connection_failure
+        description: The provider failed to connect to the configured index endpoint.
+    propagation:
+      default_action: propagate
+      parent_visible_when:
+        - parent exposes a search or RAG capability backed by this offer
+
+metadata:
+  dcp_version: 0.2.0-draft
+  claim_version: 0.1.0
+  effective_from: 2026-07-31
+  references:
+    - ../specs/DCP-CLAIM.md

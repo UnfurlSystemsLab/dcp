@@ -1,0 +1,54 @@
+binding_id: dcp://bindings/dev/example-rag-service
+contract_id: dcp://contracts/dev/example-rag-service
+environment: dev
+tenant_id: tenant-example
+
+providers:
+  - provider_id: search-tool
+    claim_uri: dcp://components/example-search-tool
+    transport: http_json
+    endpoint_ref: config://dev/search-tool/base-url
+    secret_refs: []
+    config_refs:
+      - config://dev/search-tool/index-name
+  - provider_id: answer-agent
+    claim_uri: dcp://components/example-answer-agent
+    transport: http_json
+    endpoint_ref: config://dev/answer-agent/base-url
+    secret_refs:
+      - secret://dev/model-provider/api-key
+    config_refs:
+      - config://dev/answer-agent/model-profile
+
+ports:
+  authentication:
+    mode: oidc
+    issuer_ref: config://dev/auth/issuer
+    audience_ref: config://dev/auth/audience
+  authorization:
+    decision_owner: external_policy
+    policy_endpoint_ref: config://dev/policy/base-url
+  telemetry:
+    logs: enabled
+    metrics: enabled
+    traces: enabled
+    correlation_id_required: true
+  configuration:
+    raw_credentials_allowed: false
+
+child_bindings:
+  - binding_id: dcp://bindings/dev/example-search-tool
+    role: retrieval-provider
+  - binding_id: dcp://bindings/dev/example-answer-agent
+    role: answer-provider
+
+verification:
+  contract_verified: true
+  secrets_resolved: true
+  ports_bound: true
+
+metadata:
+  dcp_version: 0.2.0-draft
+  binding_version: 0.1.0
+  generated_from: dcp://contracts/dev/example-rag-service
+  generated_at: 2026-07-31T00:00:00Z

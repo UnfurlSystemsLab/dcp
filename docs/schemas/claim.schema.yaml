@@ -1,0 +1,136 @@
+schema_id: dcp.claim
+schema_version: 0.2.0-draft
+owning_spec: ../specs/DCP-CLAIM.md
+description: Plane 1 component self-description.
+
+required:
+  - identity
+  - domain
+  - refusals
+  - dependencies
+  - offers
+  - conflict_resolution
+  - faults
+  - metadata
+
+properties:
+  identity:
+    required: [uri, name, kind, version, publisher]
+    properties:
+      uri: { type: uri, stable: true }
+      name: { type: string }
+      kind:
+        type: enum
+        values: [intelligent_component, component, infrastructure]
+      version: { type: semver }
+      publisher: { type: string }
+      publisher_uri: { type: uri, required: false }
+
+  domain:
+    required: [summary, concerns, boundary_principles]
+    properties:
+      summary: { type: string }
+      concerns:
+        type: list
+        min_items: 1
+        item:
+          required: [concern, description]
+          properties:
+            concern: { type: string, format: kebab-case, unique_within: domain.concerns }
+            description: { type: string }
+            scope_notes: { type: string, required: false }
+            owns_state:
+              type: list
+              required: false
+              item:
+                required: [resource, description, sensitivity]
+                properties:
+                  resource: { type: string }
+                  description: { type: string }
+                  sensitivity:
+                    type: enum
+                    values: [public, internal, confidential, secret]
+            owns_decisions:
+              type: list
+              required: false
+              item:
+                required: [decision, description, authority]
+                properties:
+                  decision: { type: string, format: kebab-case }
+                  description: { type: string }
+                  authority:
+                    type: enum
+                    values: [exclusive, consulted, advisory]
+      boundary_principles:
+        type: list
+        min_items: 1
+        item: { type: string }
+
+  refusals:
+    type: list
+    min_items: 1
+    item:
+      required: [concern, rationale]
+      properties:
+        concern: { type: string }
+        rationale: { type: string }
+        owned_by: { type: string, required: false }
+
+  dependencies:
+    required: [required, recommended, forbidden]
+    properties:
+      required:
+        type: list
+        item:
+          required: [need, description, accepted_providers]
+          properties:
+            need: { type: string, format: kebab-case }
+            description: { type: string }
+            accepted_providers:
+              type: list
+              min_items: 1
+      recommended: { type: list }
+      forbidden: { type: list }
+
+  offers:
+    type: list
+    item:
+      required: [capability, description, consumer_access, interface, stability, version]
+      properties:
+        capability: { type: string, format: kebab-case, unique_within: offers }
+        description: { type: string }
+        consumer_access:
+          type: enum
+          values: [any, named_components_only]
+        interface:
+          required: [kind, details]
+          properties:
+            kind:
+              type: enum
+              values: [http_api, event_stream, negotiation, in_process]
+            details: { type: map }
+        stability:
+          type: enum
+          values: [experimental, evolving, stable, deprecated]
+        version: { type: semver }
+        cost_implications: { type: string, required: false }
+
+  conflict_resolution:
+    required: [overlapping_concerns, precedence_rules, requires_human_escalation]
+
+  negotiation_surface:
+    required_when: identity.kind == intelligent_component
+
+  integration_ports:
+    required: false
+
+  child_claims:
+    type: list
+    required: false
+    description: References to child claims for DCP aggregation.
+
+  faults:
+    type: list
+
+  metadata:
+    required: [dcp_version, claim_version]

@@ -1,0 +1,26 @@
+schema_id: dcp.negotiation_question
+schema_version: 0.2.0-draft
+owning_spec: ../specs/DCP-NEGOTIATION.md
+description: Structured Plane 2 question for humans or model-assisted authoring.
+
+required:
+  - question_id
+  - artifact_ref
+  - field_path
+  - prompt
+  - answer_shape
+  - blocks_contract
+
+properties:
+  question_id: { type: string }
+  artifact_ref: { type: uri }
+  field_path: { type: string }
+  prompt: { type: string }
+  rationale: { type: string, required: false }
+  choices: { type: list, required: false }
+  answer_shape:
+    type: enum
+    values: [free_text, enum, boolean, number, object, list]
+  consequences: { type: list, required: false }
+  blocks_contract: { type: bool }
+  metadata: { type: map, required: false }

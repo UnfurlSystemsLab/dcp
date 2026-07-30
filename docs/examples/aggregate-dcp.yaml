@@ -1,0 +1,130 @@
+identity:
+  uri: dcp://aggregates/example-rag-service
+  name: Example RAG Service
+  kind: intelligent_component
+  version: 0.1.0
+  publisher: Unfurl Systems Lab
+
+domain:
+  summary: Aggregates retrieval and answer generation into a governed RAG capability.
+  concerns:
+    - concern: rag-answering
+      description: Coordinates retrieval and model-backed answer generation.
+      scope_notes: Owns orchestration and answer assembly, not source-document authorization.
+      owns_decisions:
+        - decision: retrieval-then-answer-plan
+          description: Decides when to retrieve and how to pass retrieved context to the answer component.
+          authority: exclusive
+  boundary_principles:
+    - Child DCPs remain inspectable and governable.
+    - The aggregate exposes only capabilities accepted from child claims and parent policy.
+
+child_claims:
+  - claim_uri: dcp://components/example-search-tool
+    role: retrieval-provider
+    required: true
+  - claim_uri: dcp://components/example-answer-agent
+    role: answer-provider
+    required: true
+
+refusals:
+  - concern: source-document-authorization
+    rationale: Document access decisions must be made before retrieval results are exposed.
+    owned_by: external policy engine
+  - concern: raw-model-provider-management
+    rationale: Model provider credentials and quota policy belong to the bound model-provider component.
+    owned_by: model provider component
+
+dependencies:
+  required:
+    - need: document.search
+      description: Retrieval capability from a child DCP.
+      accepted_providers:
+        - kind: component
+          example_claims: [dcp://components/example-search-tool]
+          required_properties: [tenant-scoped, returns-document-references]
+    - need: agent.run
+      description: Answer generation capability from a child DCP.
+      accepted_providers:
+        - kind: intelligent_component
+          example_claims: [dcp://components/example-answer-agent]
+          required_properties: [bounded-context, cites-sources]
+  recommended:
+    - need: audit-events
+      description: RAG questions and answer provenance should be auditable.
+      benefits_if_present: Reviewers can trace answer generation to accepted claims and retrieved sources.
+  forbidden: []
+
+offers:
+  - capability: rag.answer
+    description: Generate an answer using accepted retrieval and answer-generation child capabilities.
+    consumer_access: named_components_only
+    interface:
+      kind: http_api
+      details:
+        method: POST
+        path: /rag/answer
+        request_shape: RagAnswerRequest
+        response_shape: RagAnswerResponse
+        child_capabilities: [document.search, agent.run]
+    stability: experimental
+    version: 0.1.0
+    cost_implications: Uses model tokens through the accepted answer-provider child DCP.
+
+conflict_resolution:
+  overlapping_concerns:
+    - concern: rag-answering
+      ownership_position: negotiable
+      resolution_guidance: Parent owns orchestration; child DCPs own retrieval and answer-generation internals.
+  precedence_rules:
+    - Child refusals remain active unless the child claim version explicitly changes them.
+  requires_human_escalation: true
+
+negotiation_surface:
+  endpoint: /dcp/negotiate
+  protocols_supported: [http_post_json]
+  supported_intents:
+    - intent: explain-closure
+      description: Explain which child DCPs satisfy the aggregate capability.
+      example: Which child capabilities are required for rag.answer?
+  answer_grounding:
+    - Answers are grounded in accepted child claims and the frozen composition contract.
+  limitations:
+    - Refuses to invent child capabilities that are not present in the claim graph.
+
+integration_ports:
+  authentication:
+    required: true
+    accepted_modes: [jwt, oidc]
+  authorization:
+    required: true
+    decision_owner: external_policy
+  telemetry:
+    required: true
+    signals: [logs, metrics, traces, audit_events]
+    correlation_id_required: true
+  ai:
+    required: true
+    intents: [answer, explain-closure]
+    model_access: host_provided
+    cost_metered: true
+
+faults:
+  - code: child-capability-unavailable
+    description: A required child DCP capability is unavailable.
+    severity: blocking
+    affects:
+      - kind: offer
+        name: rag.answer
+    evidence:
+      - signal: child_binding_unhealthy
+        description: Runtime binding health check for a required child failed.
+    propagation:
+      default_action: propagate
+
+metadata:
+  dcp_version: 0.2.0-draft
+  claim_version: 0.1.0
+  effective_from: 2026-07-31
+  references:
+    - ../specs/DCP-AGGREGATION.md

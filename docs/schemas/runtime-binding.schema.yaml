@@ -1,0 +1,54 @@
+schema_id: dcp.runtime_binding
+schema_version: 0.2.0-draft
+owning_spec: ../specs/DCP-RUNTIME-BINDING.md
+description: Environment-specific binding for a frozen DCP contract.
+
+required:
+  - binding_id
+  - contract_id
+  - environment
+  - providers
+  - ports
+  - metadata
+
+properties:
+  binding_id: { type: uri }
+  contract_id: { type: uri }
+  environment: { type: string }
+  tenant_id: { type: string, required: false }
+
+  providers:
+    type: list
+    item:
+      required: [provider_id, claim_uri, transport]
+      properties:
+        provider_id: { type: string }
+        claim_uri: { type: uri }
+        transport:
+          type: enum
+          values: [in_process, http_json, grpc]
+        endpoint_ref: { type: config_ref, required: false }
+        secret_refs:
+          type: list
+          required: false
+        config_refs:
+          type: list
+          required: false
+
+  ports:
+    type: map
+    description: Bound authentication, authorization, telemetry, monitoring, secret/config, and AI/model ports.
+
+  child_bindings:
+    type: list
+    required: false
+    description: Referenced child runtime bindings for aggregate DCPs.
+
+  verification:
+    required: false
+    properties:
+      contract_verified: { type: bool }
+      secrets_resolved: { type: bool }
+      ports_bound: { type: bool }
+
+  metadata: { type: map }

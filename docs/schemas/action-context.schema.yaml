@@ -1,0 +1,30 @@
+schema_id: dcp.action_context
+schema_version: 0.2.0-draft
+owning_spec: ../specs/DCP-NEGOTIATION.md
+description: Design-time authoring or edit intent used to scope negotiation questions.
+
+required:
+  - action_id
+  - action_kind
+  - target
+  - actor
+
+properties:
+  action_id: { type: string }
+  action_kind:
+    type: enum
+    values: [create_claim, add_component, remove_component, bind_port, rebind_provider, compile_contract, export_contract]
+  target:
+    required: [artifact_ref]
+    properties:
+      artifact_ref: { type: uri }
+      field_path: { type: string, required: false }
+  actor:
+    required: [kind]
+    properties:
+      kind:
+        type: enum
+        values: [human, agent, system]
+      id: { type: string, required: false }
+  context: { type: map, required: false }
+  metadata: { type: map, required: false }

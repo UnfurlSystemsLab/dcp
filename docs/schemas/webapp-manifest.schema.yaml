@@ -1,0 +1,36 @@
+schema_id: dcp.webapp_manifest
+schema_version: 0.2.0-draft
+owning_spec: ../specs/DCP-WEBAPP-MANIFEST.md
+description: Frontend and host-shell projection of a DCP claim.
+
+required:
+  - component_uri
+  - component_version
+  - display
+  - capabilities
+  - metadata
+
+properties:
+  component_uri: { type: uri }
+  component_version: { type: semver }
+  claim_ref: { type: uri, required: false }
+
+  display:
+    required: [name, summary]
+    properties:
+      name: { type: string }
+      summary: { type: string }
+      icon_ref: { type: uri, required: false }
+
+  host_shell:
+    required: false
+    properties:
+      hosted_in_shell: { type: bool }
+      entry_points: { type: list }
+      required_permissions: { type: list }
+
+  capabilities:
+    type: list
+    description: UI-visible projection of accepted claim offers, not a separate capability source.
+
+  metadata: { type: map }

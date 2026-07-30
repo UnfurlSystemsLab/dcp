@@ -2,7 +2,7 @@
 
 **Document status:** Internal specification. Supersedes DCP v0.1 (the version referenced in `keycloak-domain-claim-example.md`).
 **Audience:** Internal. Written against concrete Unfurl products (flow, foundry, Fabric, audit, intelligent-keycloak) for clarity. A distilled, product-neutral public specification will be derived from this once the model is proven.
-**Position in the portfolio:** DCP is the keystone. It is the Component Description Protocol named in HLD-A. The substrate, the products, Fabric, and the entire Intelligent Components thesis depend on the model defined here. This document defines *what the protocol is*; the concrete schemas (`unfurl-dcp` repo) and the build plan are downstream of it.
+**Position in the portfolio:** DCP is the keystone. It is the Component Description Protocol named in HLD-A. The substrate, the products, Fabric, and the entire Intelligent Components thesis depend on the model defined here. This document defines *what the protocol is*; the concrete schemas live in this specification repository, and implementation build plans are downstream of it.
 
 ---
 
@@ -229,7 +229,7 @@ A component has **one self-description with two projections**: the backend facet
      conflict positions      -->  (theme contribution: suggest-vs-decide)
 ```
 
-**Consequence for the schema work:** the DCP claim schema and the webapp manifest schema must be specified *together*, in `unfurl-dcp`, derived from one component-description definition. Specifying the claim in isolation and the manifest later guarantees drift. The claim is primary; the manifest is generated from or validated against it.
+**Consequence for the schema work:** the DCP claim schema and the webapp manifest schema must be specified *together* in this specification repository, derived from one component-description definition. Specifying the claim in isolation and the manifest later guarantees drift. The claim is primary; the manifest is generated from or validated against it.
 
 ---
 
@@ -296,7 +296,7 @@ The workflow or component keeps using the logical name (`reports-store`, `zendes
 
 ### 5.3 The negotiation question schema
 
-Negotiation is structured by a defined set of questions a composition must answer — "does this party own this concern?", "is this an exclusive conflict?", "what owns the refused concern instead?", "is this dependency satisfied?". This schema is defined once in `unfurl-dcp` and rendered two ways:
+Negotiation is structured by a defined set of questions a composition must answer — "does this party own this concern?", "is this an exclusive conflict?", "what owns the refused concern instead?", "is this dependency satisfied?". This schema is defined once in this specification repository and rendered two ways:
 
 - As a **human interview** in H2C (Fabric asks the human).
 - As a **model prompt** in C2C (the model answers).
@@ -512,7 +512,7 @@ v0.2 incorporates the seven "observations from writing this" appended to `keyclo
 
 Two documents are downstream of this one:
 
-- **DCP schema specification (`unfurl-dcp`)** — the concrete claim schema, contract schema, webapp-manifest projection schema, and question schema, field by field. Built from the model defined here. The claim and manifest schemas are specified *together* per §4.
-- **`unfurl-dcp` repo build spec** — the Claude-Code-ready phased build plan with forbidden imports and acceptance criteria, against the schemas.
+- **DCP schema specification (`dcp`)** — the concrete claim schema, contract schema, webapp-manifest projection schema, and question schema, field by field. Built from the model defined here. The claim and manifest schemas are specified *together* per §4.
+- **`unfurl-dcp` implementation repo** — the Java implementation and build plan with forbidden imports and acceptance criteria, against the schemas.
 
 The model defined here should be settled (especially the §11 open questions) before either is written, because both encode this model into schema and code.
