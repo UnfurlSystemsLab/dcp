@@ -6,6 +6,9 @@ This file records public specification changes for the DCP repository.
 
 ### Changed
 
+- Changed the DCP repository license from MIT to Apache License 2.0 before
+  external release so the specification and Java implementation share one
+  permissive license with explicit patent terms.
 - Expanded the repository README with a reader-facing "What is DCP?" section,
   including why DCP exists, the three planes, core artifacts, and what DCP is
   not.
@@ -19,7 +22,7 @@ This file records public specification changes for the DCP repository.
 - Added `SECURITY.md` with DCP-specific security reporting scope for claims,
   runtime bindings, documentation projection, faults, aggregation, and
   governance concerns.
-- Added the root MIT `LICENSE` file so GitHub can expose the repository's
+- Added the root Apache 2.0 `LICENSE` file so GitHub can expose the repository's
   license overview tab.
 - Created the spec-first public document structure:
   - standards-support index;

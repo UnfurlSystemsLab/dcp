@@ -10,6 +10,10 @@ The Java implementation belongs in
 Implementation pull requests are welcome there, but protocol behavior should be
 specified here first.
 
+Unless you explicitly state otherwise, contributions submitted to this
+repository are licensed under the [Apache License 2.0](LICENSE), matching this
+repository's license.
+
 ## Before Proposing A Change
 
 Read the relevant specification documents before opening a pull request:

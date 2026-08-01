@@ -1,6 +1,6 @@
 # Domain Claim Protocol
 
-| [Overview](#what-is-dcp) | [Specs](docs/DCP-STANDARDS-SUPPORT.md) | [Schemas](docs/schemas/) | [Elements](docs/elements/) | [Examples](docs/examples/) | [Versions](docs/versions/changelog.md) | [Contributing](CONTRIBUTING.md) | [Security](SECURITY.md) | [MIT License](LICENSE) | [Discussions](https://github.com/UnfurlSystemsLab/dcp/discussions) |
+| [Overview](#what-is-dcp) | [Specs](docs/DCP-STANDARDS-SUPPORT.md) | [Schemas](docs/schemas/) | [Elements](docs/elements/) | [Examples](docs/examples/) | [Versions](docs/versions/changelog.md) | [Contributing](CONTRIBUTING.md) | [Security](SECURITY.md) | [Apache 2.0 License](LICENSE) | [Discussions](https://github.com/UnfurlSystemsLab/dcp/discussions) |
 |---|---|---|---|---|---|---|---|---|---|
 | What DCP is and why it exists | The public specification map | Machine-readable draft shapes | Field and element reference | Minimal and aggregate examples | Changelog and compatibility | Spec change process | Security reporting | Reuse terms | Design questions and proposals |
 
@@ -124,7 +124,7 @@ version documents.
 
 ## License
 
-DCP is published under the [MIT License](LICENSE).
+DCP is published under the [Apache License 2.0](LICENSE).
 
 ## Participate
 
