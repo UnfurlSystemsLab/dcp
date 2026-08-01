@@ -1,8 +1,8 @@
 # Domain Claim Protocol
 
-| [Overview](#what-is-dcp) | [Specs](docs/DCP-STANDARDS-SUPPORT.md) | [Schemas](docs/schemas/) | [Elements](docs/elements/) | [Examples](docs/examples/) | [Versions](docs/versions/changelog.md) | [Discussions](https://github.com/UnfurlSystemsLab/dcp/discussions) |
-|---|---|---|---|---|---|---|
-| What DCP is and why it exists | The public specification map | Machine-readable draft shapes | Field and element reference | Minimal and aggregate examples | Changelog and compatibility | Design questions and proposals |
+| [Overview](#what-is-dcp) | [Specs](docs/DCP-STANDARDS-SUPPORT.md) | [Schemas](docs/schemas/) | [Elements](docs/elements/) | [Examples](docs/examples/) | [Versions](docs/versions/changelog.md) | [MIT License](LICENSE) | [Discussions](https://github.com/UnfurlSystemsLab/dcp/discussions) |
+|---|---|---|---|---|---|---|---|
+| What DCP is and why it exists | The public specification map | Machine-readable draft shapes | Field and element reference | Minimal and aggregate examples | Changelog and compatibility | Reuse terms | Design questions and proposals |
 
 This repository is the public specification home for the Domain Claim Protocol
 (DCP).
@@ -121,6 +121,10 @@ adapter work exposes gaps.
 The earlier source documents remain in `docs/HLD-C-*.md` while the public
 specification is being split into smaller spec, schema, element, example, and
 version documents.
+
+## License
+
+DCP is published under the [MIT License](LICENSE).
 
 ## Participate
 

@@ -14,6 +14,8 @@ This file records public specification changes for the DCP repository.
 
 ### Added
 
+- Added the root MIT `LICENSE` file so GitHub can expose the repository's
+  license overview tab.
 - Created the spec-first public document structure:
   - standards-support index;
   - per-topic specification pages;
