@@ -1,5 +1,9 @@
 # Domain Claim Protocol
 
+| [Overview](#what-is-dcp) | [Specs](docs/DCP-STANDARDS-SUPPORT.md) | [Schemas](docs/schemas/) | [Elements](docs/elements/) | [Examples](docs/examples/) | [Versions](docs/versions/changelog.md) | [Discussions](https://github.com/UnfurlSystemsLab/dcp/discussions) |
+|---|---|---|---|---|---|---|
+| What DCP is and why it exists | The public specification map | Machine-readable draft shapes | Field and element reference | Minimal and aggregate examples | Changelog and compatibility | Design questions and proposals |
+
 This repository is the public specification home for the Domain Claim Protocol
 (DCP).
 
@@ -95,6 +99,18 @@ in [`UnfurlSystemsLab/unfurl-dcp`](https://github.com/UnfurlSystemsLab/unfurl-dc
 4. [DCP Schema Directory](docs/schemas/)
 5. [DCP Element Directory](docs/elements/)
 6. [Java implementation repository](https://github.com/UnfurlSystemsLab/unfurl-dcp)
+
+## Quick Paths
+
+| Reader Goal | Start With |
+|---|---|
+| Understand the protocol model | [DCP Core Specification](docs/specs/DCP-CORE.md) |
+| Describe a component or adapter | [DCP Claim Specification](docs/specs/DCP-CLAIM.md) |
+| Build aggregate/component assemblies | [DCP Aggregation Specification](docs/specs/DCP-AGGREGATION.md) |
+| Bind a frozen contract to runtime | [DCP Runtime Binding Specification](docs/specs/DCP-RUNTIME-BINDING.md) |
+| Expose generated API/tool docs | [DCP Documentation Projection Specification](docs/specs/DCP-DOCUMENTATION.md) |
+| Review current schema fields | [DCP Schema Directory](docs/schemas/) |
+| Discuss open design choices | [DCP Discussions](https://github.com/UnfurlSystemsLab/dcp/discussions) |
 
 ## Status
 

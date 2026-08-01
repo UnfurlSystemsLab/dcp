@@ -9,6 +9,8 @@ This file records public specification changes for the DCP repository.
 - Expanded the repository README with a reader-facing "What is DCP?" section,
   including why DCP exists, the three planes, core artifacts, and what DCP is
   not.
+- Added README navigation tabs and a quick-path map so readers can move from
+  overview to specs, schemas, elements, examples, versions, and discussions.
 
 ### Added
 
