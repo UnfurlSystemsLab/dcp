@@ -1,8 +1,8 @@
 # Domain Claim Protocol
 
-| [Overview](#what-is-dcp) | [Specs](docs/DCP-STANDARDS-SUPPORT.md) | [Schemas](docs/schemas/) | [Elements](docs/elements/) | [Examples](docs/examples/) | [Versions](docs/versions/changelog.md) | [MIT License](LICENSE) | [Discussions](https://github.com/UnfurlSystemsLab/dcp/discussions) |
-|---|---|---|---|---|---|---|---|
-| What DCP is and why it exists | The public specification map | Machine-readable draft shapes | Field and element reference | Minimal and aggregate examples | Changelog and compatibility | Reuse terms | Design questions and proposals |
+| [Overview](#what-is-dcp) | [Specs](docs/DCP-STANDARDS-SUPPORT.md) | [Schemas](docs/schemas/) | [Elements](docs/elements/) | [Examples](docs/examples/) | [Versions](docs/versions/changelog.md) | [Contributing](CONTRIBUTING.md) | [Security](SECURITY.md) | [MIT License](LICENSE) | [Discussions](https://github.com/UnfurlSystemsLab/dcp/discussions) |
+|---|---|---|---|---|---|---|---|---|---|
+| What DCP is and why it exists | The public specification map | Machine-readable draft shapes | Field and element reference | Minimal and aggregate examples | Changelog and compatibility | Spec change process | Security reporting | Reuse terms | Design questions and proposals |
 
 This repository is the public specification home for the Domain Claim Protocol
 (DCP).
@@ -130,5 +130,8 @@ DCP is published under the [MIT License](LICENSE).
 
 - Use Issues for concrete gaps, examples, or schema problems.
 - Use Discussions for design questions, tradeoffs, and longer-form proposals.
+- Read [Contributing](CONTRIBUTING.md) before changing specs or schemas.
+- Read [Security](SECURITY.md) before reporting sensitive protocol or runtime
+  binding concerns.
 - Bring real component examples whenever possible; DCP is meant to be tested by
   actual adapter and substrate work, not only abstract schema review.

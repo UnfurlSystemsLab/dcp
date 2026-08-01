@@ -14,6 +14,11 @@ This file records public specification changes for the DCP repository.
 
 ### Added
 
+- Added `CONTRIBUTING.md` with the DCP spec-change, schema-change, example, and
+  changelog requirements.
+- Added `SECURITY.md` with DCP-specific security reporting scope for claims,
+  runtime bindings, documentation projection, faults, aggregation, and
+  governance concerns.
 - Added the root MIT `LICENSE` file so GitHub can expose the repository's
   license overview tab.
 - Created the spec-first public document structure:
