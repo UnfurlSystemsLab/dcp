@@ -4,6 +4,12 @@ This file records public specification changes for the DCP repository.
 
 ## 0.2.0-draft
 
+### Changed
+
+- Expanded the repository README with a reader-facing "What is DCP?" section,
+  including why DCP exists, the three planes, core artifacts, and what DCP is
+  not.
+
 ### Added
 
 - Created the spec-first public document structure:

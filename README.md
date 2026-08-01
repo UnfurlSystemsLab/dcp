@@ -3,9 +3,77 @@
 This repository is the public specification home for the Domain Claim Protocol
 (DCP).
 
-DCP is the contract language Unfurl uses when software components need to
-describe what they own, what they refuse, what they need, what they offer, what
-can fail, and how they may be bound into a governed assembly.
+## What Is DCP?
+
+The Domain Claim Protocol is a specification for describing software
+capabilities before they are assembled.
+
+Modern systems are increasingly composed from independent components, tools,
+agents, services, UI modules, infrastructure providers, and runtime adapters.
+Those parts may have APIs, but an API alone does not say whether the part should
+be used in a specific assembly. DCP fills that gap.
+
+DCP lets a component publish a structured claim that answers:
+
+- What does this component own?
+- Where does its responsibility end?
+- What does it explicitly refuse to own?
+- What dependencies must be present before it can work?
+- What capabilities does it offer to other components?
+- What conflicts can happen when another component claims the same concern?
+- What ports, faults, trust context, and runtime bindings are required?
+
+In short: **DCP turns hidden integration assumptions into explicit, reviewable
+contracts.**
+
+## Why It Exists
+
+DCP exists because AI-assisted and component-based systems need a way to reason
+about composition without guessing. A model, compiler, runtime, or human
+reviewer should not have to infer ownership, safety boundaries, provider needs,
+or fault behavior from prose, code, or API shape alone.
+
+DCP gives assembly tools a shared language for deciding:
+
+- whether a component belongs in an assembly;
+- which provider can satisfy a consumer need;
+- which concerns are owned, refused, shared, or conflicting;
+- which child components support an aggregate capability;
+- which runtime bindings must exist before execution;
+- which generated docs may expose a capability.
+
+## The Three Planes
+
+DCP separates design-time reasoning from runtime execution.
+
+| Plane | Question | Output |
+|---|---|---|
+| Description | What does this component claim about itself? | Claim |
+| Negotiation | Can these claims compose under this context and policy? | Composition contract |
+| Invocation | Can this call happen against the frozen contract? | Deterministic runtime result |
+
+Negotiation is a compile step. Invocation is execution. Runtime calls should
+execute against a frozen contract, not re-negotiate the system on every call.
+
+## Core Artifacts
+
+- **Claim:** a component's self-description: identity, domain, refusals,
+  dependencies, offers, ports, faults, and metadata.
+- **Composition contract:** the frozen negotiation result that binds accepted
+  needs to accepted offers.
+- **Runtime binding:** environment-specific wiring for a frozen contract, using
+  secret/config references rather than raw credentials.
+- **Referenced child DCPs:** the standard way to build aggregate capabilities
+  while keeping child claims, contracts, and bindings inspectable.
+- **Documentation projection:** generated Swagger/OpenAPI/AsyncAPI/MCP or human
+  docs from accepted DCP capability surfaces only.
+
+## What DCP Is Not
+
+DCP is not a business payload format, auth protocol, deployment platform, model
+runtime, or replacement for APIs. It sits above those surfaces. A component may
+still expose HTTP, gRPC, events, MCP tools, or in-process calls; DCP describes
+whether and how those capabilities compose.
 
 ## Repository Role
 
