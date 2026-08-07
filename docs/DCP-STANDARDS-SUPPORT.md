@@ -8,6 +8,12 @@ This page is the entry point for the Domain Claim Protocol (DCP) specification
 set. It is intentionally an index before it is a schema reference: readers
 should understand the protocol surfaces before reading field-level definitions.
 
+## Orientation
+
+| Document | Purpose |
+|---|---|
+| [DCP Vocabulary](DCP-VOCABULARY.md) | Defines common DCP terms and points each term back to its owning spec or element page. |
+
 ## Specification Set
 
 | Document | Purpose | Status |

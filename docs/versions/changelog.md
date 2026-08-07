@@ -35,6 +35,8 @@ This file records public specification changes for the DCP repository.
   DCP composition.
 - Added DCP documentation projection as an explicit specification page for
   exposing only accepted capability surfaces.
+- Added `docs/DCP-VOCABULARY.md` as an informative vocabulary page that maps
+  common DCP terms back to their owning specs and element pages.
 - Added minimal claim, aggregate claim, and runtime binding examples.
 
 ### Preserved

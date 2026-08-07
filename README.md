@@ -1,8 +1,8 @@
 # Domain Claim Protocol
 
-| [Overview](#what-is-dcp) | [Specs](docs/DCP-STANDARDS-SUPPORT.md) | [Schemas](docs/schemas/) | [Elements](docs/elements/) | [Examples](docs/examples/) | [Versions](docs/versions/changelog.md) | [Contributing](CONTRIBUTING.md) | [Security](SECURITY.md) | [Apache 2.0 License](LICENSE) | [Discussions](https://github.com/UnfurlSystemsLab/dcp/discussions) |
-|---|---|---|---|---|---|---|---|---|---|
-| What DCP is and why it exists | The public specification map | Machine-readable draft shapes | Field and element reference | Minimal and aggregate examples | Changelog and compatibility | Spec change process | Security reporting | Reuse terms | Design questions and proposals |
+| [Overview](#what-is-dcp) | [Specs](docs/DCP-STANDARDS-SUPPORT.md) | [Vocabulary](docs/DCP-VOCABULARY.md) | [Schemas](docs/schemas/) | [Elements](docs/elements/) | [Examples](docs/examples/) | [Versions](docs/versions/changelog.md) | [Contributing](CONTRIBUTING.md) | [Security](SECURITY.md) | [Apache 2.0 License](LICENSE) | [Discussions](https://github.com/UnfurlSystemsLab/dcp/discussions) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| What DCP is and why it exists | The public specification map | Common DCP terms | Machine-readable draft shapes | Field and element reference | Minimal and aggregate examples | Changelog and compatibility | Spec change process | Security reporting | Reuse terms | Design questions and proposals |
 
 This repository is the public specification home for the Domain Claim Protocol
 (DCP).
@@ -94,17 +94,19 @@ in [`UnfurlSystemsLab/unfurl-dcp`](https://github.com/UnfurlSystemsLab/unfurl-dc
 ## Start Here
 
 1. [DCP Standards Support](docs/DCP-STANDARDS-SUPPORT.md)
-2. [DCP Core Specification](docs/specs/DCP-CORE.md)
-3. [DCP Claim Specification](docs/specs/DCP-CLAIM.md)
-4. [DCP Schema Directory](docs/schemas/)
-5. [DCP Element Directory](docs/elements/)
-6. [Java implementation repository](https://github.com/UnfurlSystemsLab/unfurl-dcp)
+2. [DCP Vocabulary](docs/DCP-VOCABULARY.md)
+3. [DCP Core Specification](docs/specs/DCP-CORE.md)
+4. [DCP Claim Specification](docs/specs/DCP-CLAIM.md)
+5. [DCP Schema Directory](docs/schemas/)
+6. [DCP Element Directory](docs/elements/)
+7. [Java implementation repository](https://github.com/UnfurlSystemsLab/unfurl-dcp)
 
 ## Quick Paths
 
 | Reader Goal | Start With |
 |---|---|
 | Understand the protocol model | [DCP Core Specification](docs/specs/DCP-CORE.md) |
+| Learn common DCP terminology | [DCP Vocabulary](docs/DCP-VOCABULARY.md) |
 | Describe a component or adapter | [DCP Claim Specification](docs/specs/DCP-CLAIM.md) |
 | Build aggregate/component assemblies | [DCP Aggregation Specification](docs/specs/DCP-AGGREGATION.md) |
 | Bind a frozen contract to runtime | [DCP Runtime Binding Specification](docs/specs/DCP-RUNTIME-BINDING.md) |
