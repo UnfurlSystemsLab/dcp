@@ -456,6 +456,8 @@ runtime_binding:
   configuration:                  # optional, non-secret config values or references
     values: map<string, any>?
     config_refs: map<string, config_ref>?
+    secret_refs: map<string, secret_ref>?   # secret:// references only, never inline secrets; e.g. an identity
+                                            # binding's per-service client credentials, keyed by service claim URI
 
   deployment_controls:            # optional
     rollout_strategy: enum[manual, automatic, canary, blue_green]?
