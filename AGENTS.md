@@ -65,6 +65,24 @@ The spec must remain product-neutral even when examples mention Unfurl products.
 - Keep child/referenced DCP aggregation as a first-class protocol construct.
   Do not introduce sidecar extension blocks that bypass the DCP reference model.
 
+## 4a. Optional Capabilities: The Composition Contract Decides
+
+An optional capability is one a composition may include or leave out, such as
+an identity provider. Its presence is a composition fact, not a deployment
+setting.
+
+- Whether an optional capability is present is decided only by the composition
+  contract: present when the contract includes a child contract for it, absent
+  otherwise. No out-of-band switch (environment, profile, flag, or detecting
+  whether a service is reachable) may change that.
+- When it is present, every consumer that can use it uses it through its
+  declared contract, with no downgraded or partial mode. A consumer that cannot
+  use it must refuse to run rather than run without it.
+- When it is absent, consumers still work, with a defined and documented
+  behavior for its absence. Absence is never an error.
+- Specifications, element docs, and examples that involve an optional
+  capability define the behavior for both cases, and examples show both.
+
 ## 5. Schema Change Rules
 
 Before changing any schema:
@@ -139,6 +157,8 @@ Before completing a spec change:
 - The conceptual spec, schema, element docs, examples, and version notes are
   consistent.
 - No Java implementation detail has leaked into the spec as a requirement.
+- Optional capabilities define behavior for both presence and absence, decided
+  only by the composition contract (§4a).
 - New terms are defined before use.
 - Links point to canonical repositories:
   - DCP spec: `https://github.com/UnfurlSystemsLab/dcp`
