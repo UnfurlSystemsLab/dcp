@@ -37,3 +37,17 @@ compatibility guarantees.
 `unfurl-dcp` is the Java implementation of this specification. If the Java
 implementation accepts legacy aliases or migration helpers, that behavior should
 be documented in `unfurl-dcp`, not in the protocol spec as a permanent rule.
+
+## Documentation Projection Migration (Unreleased)
+
+| Earlier field | Replacement | Migration |
+|---|---|---|
+| `source_contract` | `source.root_contract` | Use the verified aggregate root id. |
+| `source_binding` | `source.runtime_bindings` | List every child binding id used. |
+| `outputs[].kind/path` | `surfaces[]` plus the rendered views | Output locations are a projector concern, not part of the model. |
+| `filters` | Request-time filtering (DCP Documentation §5) | Filters narrow a view and are not stored. |
+| `schemas[].request_schema_ref` / `response_schema_ref` (HLD-C2 G draft) | `components[].capabilities[].request_schema` / `response_schema` (`artifact_ref`) | Ship the schemas in the component artifact and reference them from `offers[].documentation`. |
+
+Claims that carried payload schemas as `interface.details.input_schema` /
+`output_schema` path strings move them to `offers[].documentation`, with
+`sha256` added. The detail keys are not documentation proof.

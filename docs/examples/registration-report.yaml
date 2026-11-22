@@ -1,0 +1,28 @@
+# Example: the registration report a DCP HTTP host serves at GET <service_root>/dcp/registrations.
+# Schema: ../schemas/registration-report.schema.yaml. Owning spec: ../specs/DCP-HTTP-BINDING.md.
+#
+# The host serves document.search over HTTP and hosts one in-process component. It serves the
+# index-status product surface, but not index-admin.
+component_uri: dcp://components/example-search-tool
+component_version: 0.1.0
+claim_hash: 3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d   # example hash
+observed_at: 2026-11-22T10:00:00Z
+registrations:
+  - contract_id: dcp://contracts/dev/example-rag-service/document-search
+    contract_version: 1.0.0
+    capability: document.search
+    provider_claim_uri: dcp://components/example-search-tool        # the host itself
+    provider_claim_version: 0.1.0
+    provider_claim_hash: 3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d   # equals claim_hash
+    surface: http
+    path: /dcp/document.search
+  - contract_id: dcp://contracts/dev/example-rag-service/query-rewrite
+    contract_version: 1.0.0
+    capability: query.rewrite
+    provider_claim_uri: dcp://components/example-query-rewriter     # a hosted component, never the host's identity
+    provider_claim_version: 0.2.0
+    provider_claim_hash: 7d6c5b4a3f2e1d0c9b8a7f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c   # verified by the host at admission
+    surface: hosted_in_process
+served_surfaces: [index-status]
+# With an identity contract in the composition, this request needs a bearer token with
+# permission dcp.registrations.read. Without one, it is served unauthenticated on a trusted network.
