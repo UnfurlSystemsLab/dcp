@@ -58,6 +58,11 @@ when:
 All HTTP entries on one service root must pin the same provider; otherwise
 projection fails with `SERVICE_ROOT_CONFLICT`.
 
+An entry whose provider offer is `external_protocol` (DCP Claim §4) is an
+`external` entry whatever its deployment kind, like an `external_saas` or
+`webapp` binding: it is listed with reason `EXTERNAL_SURFACE`, never probed,
+and never a documentation gap.
+
 Every observation is applied. Documents change exactly when documented content
 changes, for example served surfaces. The report changes whenever reasons,
 details or observation times change.

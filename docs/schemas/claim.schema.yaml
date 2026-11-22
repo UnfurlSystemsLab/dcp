@@ -111,7 +111,9 @@ properties:
           properties:
             kind:
               type: enum
-              values: [http_api, event_stream, negotiation, in_process]
+              values: [http_api, event_stream, negotiation, in_process, external_protocol]
+              # external_protocol: reached over the provider's own standard protocol (details.protocol required),
+              # never through the DCP invocation envelope; it carries no documentation (HLD-C2 A.6)
             details: { type: map }
         stability:
           type: enum

@@ -6,6 +6,15 @@ This file records public specification changes for the DCP repository.
 
 ### Added
 
+- Offer interface kind `external_protocol`, for an offer reached over a
+  standard protocol of the provider's own (for example OAuth 2.0 for
+  `identity-context`) rather than the DCP invocation envelope. Its `details`
+  name the protocol in `protocol`, and it carries no `documentation`.
+  Documentation lists it as an `external` entry (`EXTERNAL_SURFACE`) whatever
+  its deployment kind, so a bundled identity provider and a customer-run one
+  are documented the same way and neither is a documentation gap (HLD-C2 A.6,
+  C, G.1; DCP Claim §4; DCP Documentation §3).
+
 - `offers[].documentation` on claims: optional `summary`, plus `request_schema` and
   `response_schema` as hash-pinned JSON Schemas of the invocation payloads
   (HLD-C2 A.6; DCP Claim §4).

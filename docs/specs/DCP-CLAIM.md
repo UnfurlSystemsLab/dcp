@@ -68,6 +68,13 @@ Documentation is not matched by the resolver and never changes which needs an
 offer satisfies. Payload schemas MUST be stated through `documentation`;
 free-form hints in `interface.details` are not documentation proof.
 
+An offer whose `interface.kind` is `external_protocol` is reached over a
+standard protocol of the provider's own, such as OAuth 2.0, never through the
+DCP invocation envelope. Its `details` MUST name that protocol in `protocol`,
+and it MUST NOT carry `documentation`. The kind does not depend on deployment:
+the same claim holds whether the provider is deployed with the composition or
+is one the customer already runs.
+
 ## 4A. Shipped Artifacts
 
 An `artifact_ref` names one file inside the artifact that carries the claim:
