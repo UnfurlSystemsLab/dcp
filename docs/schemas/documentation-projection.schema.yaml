@@ -1,32 +1,174 @@
 schema_id: dcp.documentation_projection
 schema_version: 0.2.0-draft
 owning_spec: ../specs/DCP-DOCUMENTATION.md
-description: Generated documentation derived from accepted DCP capability surfaces.
+description: Generated documentation derived from accepted DCP capability surfaces, with a report covering every entry.
 
 required:
-  - projection_id
-  - source_contract
-  - source_binding
-  - outputs
-  - filters
-  - metadata
+  - document_id
+  - target_environment
+  - source
+  - identity
+  - surfaces
+  - components
+  - report
+  - lifecycle
 
 properties:
-  projection_id: { type: uri }
-  source_contract: { type: uri }
-  source_binding: { type: uri }
-  outputs:
+  document_id: { type: uri }
+
+  target_environment:
+    required: [environment]
+    properties:
+      environment: { type: string }
+      tenant: { type: string, required: false }
+      namespace: { type: string, required: false }
+
+  source:
+    required: [contracts, runtime_bindings, registered_capabilities]
+    properties:
+      root_contract: { type: uri, required_when: not a host view }
+      contracts: { type: list, item: { type: uri } }
+      runtime_bindings: { type: list, item: { type: uri } }
+      registered_capabilities: { type: list, item: { type: string } }
+
+  identity:
+    type: enum
+    values: [in_contract, absent]
+
+  surfaces:
     type: list
     item:
-      required: [kind, path]
+      required: [kind, visibility, includes]
       properties:
         kind:
           type: enum
-          values: [openapi, asyncapi, mcp, human_summary]
-        path: { type: string }
-  filters:
+          values: [openapi, human_summary, swagger_ui, asyncapi, mcp_tools, sdk_metadata]
+          rules:
+            - asyncapi, mcp_tools and sdk_metadata are reserved; projectors do not emit them in this draft
+        visibility:
+          type: enum
+          values: [public, internal, private]
+        base_url_ref: { type: config_ref, required: false }
+        includes: { type: list, item: { type: string } }
+
+  components:
+    type: list
+    item:
+      required: [component_uri, component_version, name, claim_hash, service_root, protected, capabilities, api_documents]
+      rules:
+        - one per host with at least one documented capability; other components appear only in the report
+      properties:
+        component_uri: { type: uri }
+        component_version: { type: semver }
+        name: { type: string }
+        claim_hash: { type: string, pattern: "^[0-9a-f]{64}$" }
+        service_root: { type: uri }
+        protected: { type: bool, description: The identity contract names this component as an audience. }
+        capabilities:
+          type: list
+          item:
+            required: [capability, capability_version, description, contract_id, surface, visibility, provider_component_uri,
+                       provider_component_version, operations, faults]
+            properties:
+              capability: { type: string }
+              capability_version: { type: semver }
+              description: { type: string }
+              contract_id: { type: uri }
+              binding_id: { type: uri, required_when: not a host view }
+              surface:
+                type: enum
+                values: [http, hosted_in_process, external]
+              visibility:
+                type: enum
+                values: [public, internal, private]
+              path: { type: string, required_when: surface == http }
+              hosted_by: { type: uri, required_when: surface == hosted_in_process }
+              provider_component_uri: { type: uri, description: Differs from the enclosing component when hosted in process. }
+              provider_component_version: { type: semver }
+              operations:
+                type: list
+                required_when: documented
+                min_items: 1
+                item:
+                  required: [operation, request_schema, response_schema]
+                  properties:
+                    operation: { type: string }
+                    summary: { type: string, required: false }
+                    request_schema: { type: ref, ref: "claim.schema.yaml#/definitions/artifact_ref" }
+                    response_schema: { type: ref, ref: "claim.schema.yaml#/definitions/artifact_ref" }
+              faults: { type: list, item: { type: string } }
+        api_documents:
+          type: list
+          item:
+            required: [api_id, openapi, visibility, served_surfaces]
+            properties:
+              api_id: { type: string }
+              openapi: { type: ref, ref: "claim.schema.yaml#/definitions/artifact_ref" }
+              visibility:
+                type: enum
+                values: [public, internal, private]
+              served_surfaces: { type: list, item: { type: string } }
+
+  report:
+    required: [entries, api_operations]
     properties:
-      tenant_id: { type: string, required: false }
-      environment: { type: string, required: false }
-      accepted_capabilities_only: { type: bool }
-  metadata: { type: map }
+      entries:
+        type: list
+        rules:
+          - exactly one entry per child contract of source.root_contract
+        item:
+          required: [contract_id, capability, provider_component_uri, surface, status, reason]
+          properties:
+            contract_id: { type: uri }
+            binding_id: { type: uri, required: false }
+            capability: { type: string }
+            provider_component_uri: { type: uri }
+            surface:
+              type: enum
+              values: [http, hosted_in_process, external]
+            status:
+              type: enum
+              values: [active, inactive, not_probed]
+            reason:
+              type: enum
+              values:
+                - ACTIVE
+                - POLICY_PRIVATE
+                - BINDING_MISSING
+                - BINDING_DISABLED
+                - BINDING_ENDPOINT_MISSING
+                - ENDPOINT_PATH_MISMATCH
+                - HOST_UNKNOWN
+                - PROVIDER_UNREACHABLE
+                - REGISTRATION_UNAUTHORIZED
+                - HOST_CLAIM_MISMATCH
+                - CLAIM_MISMATCH
+                - NOT_REGISTERED
+                - EXTERNAL_SURFACE
+            detail: { type: string, required: false }
+            endpoint: { type: uri, required: false }
+            observed_at: { type: timestamp, required: false }
+      api_operations:
+        type: list
+        item:
+          required: [component_uri, api_id, operation, reason]
+          properties:
+            component_uri: { type: uri }
+            api_id: { type: string }
+            operation: { type: string, description: "<METHOD> <path>" }
+            reason:
+              type: enum
+              values: [SURFACE_NOT_SERVED, POLICY_PRIVATE]
+
+  lifecycle:
+    required: [generated_by, generated_at]
+    properties:
+      generated_by: { type: string }
+      generated_at: { type: timestamp }
+
+rules:
+  - a deployment with a documentation gap produces no projection; the projector fails with DOCUMENTATION_GAP
+  - http entries sharing a service root pin one provider; otherwise the projector fails with SERVICE_ROOT_CONFLICT
+  - every observation is applied; rendered documents change exactly when documented content changes
+  - status active iff reason ACTIVE; status not_probed iff reason EXTERNAL_SURFACE
+  - no field contains credentials, secret references, prompts or model outputs

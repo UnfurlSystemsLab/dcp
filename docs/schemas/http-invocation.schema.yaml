@@ -1,0 +1,52 @@
+schema_id: dcp.http_invocation
+schema_version: 0.2.0-draft
+owning_spec: ../specs/DCP-HTTP-BINDING.md
+description: >-
+  The http_json request and response bodies for POST <service_root>/dcp/<capability>. Field names are the deployed
+  wire names and are an explicit exception to DCP's snake_case convention.
+
+definitions:
+  request:
+    required: [invocation]
+    properties:
+      invocation:
+        required: [contractId, operation, input]
+        properties:
+          contractId: { type: string }
+          operation: { type: string }
+          consumerComponent: { type: string, required: false }
+          providerComponent: { type: string, required: false }
+          input: { type: map, description: "Described by documentation.operations[operation == invocation.operation].request_schema." }
+          correlationId: { type: string, required: false }
+          traceContext: { type: map, required: false, values: string }
+          integrityHash: { type: string, required: false }
+          metadata: { type: map, required: false }
+      context:
+        required: false
+        allowed_when: the composition has no identity contract
+        properties:
+          tenantId: { type: string, required: false }
+          userId: { type: string, required: false }
+          roles: { type: list, required: false, item: { type: string } }
+          permissions: { type: list, required: false, item: { type: string } }
+          correlationId: { type: string, required: false }
+          requestId: { type: string, required: false }
+          traceContext: { type: map, required: false, values: string }
+          metadata: { type: map, required: false }
+
+  response:
+    required: [success, output]
+    properties:
+      success: { type: bool }
+      output: { type: map, description: "success true - the selected operation's response_schema; success false - any object, normally {}, never checked against the response_schema." }
+      errorCode: { type: string, required: false, description: A declared fault code or a host failure code. }
+      errorMessage: { type: string, required: false }
+      metadata: { type: map, required: false }
+
+rules:
+  - 200 for every invocation that reached the capability; capability faults are success false
+  - success false requires errorCode
+  - 400 malformed envelope, or a body context while an identity contract is present
+  - 401 missing or invalid bearer token; 403 insufficient permission (identity contract present only)
+  - 404 capability not registered on this host; 503 host not ready
+  - X-Correlation-Id and traceparent headers are propagated when present

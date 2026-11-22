@@ -58,6 +58,27 @@ offers:
         response_shape: SearchResponse
     stability: evolving
     version: 0.1.0
+    documentation:
+      summary: Search the configured index.
+      operations:
+        - operation: document.search
+          request_schema:
+            path: dcp/schemas/document.search.request.schema.json
+            media_type: application/schema+json
+            sha256: 5f2b0c8e3a1d4e6f7a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f   # example hash
+          response_schema:
+            path: dcp/schemas/document.search.response.schema.json
+            media_type: application/schema+json
+            sha256: 0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0a1b   # example hash
+        - operation: document.suggest        # a second operation: selected by invocation.operation, own schemas
+          request_schema:
+            path: dcp/schemas/document.suggest.request.schema.json
+            media_type: application/schema+json
+            sha256: 1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b   # example hash
+          response_schema:
+            path: dcp/schemas/document.suggest.response.schema.json
+            media_type: application/schema+json
+            sha256: 2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c   # example hash
 
 conflict_resolution:
   overlapping_concerns:
@@ -93,6 +114,22 @@ faults:
       default_action: propagate
       parent_visible_when:
         - parent exposes a search or RAG capability backed by this offer
+
+api_documents:
+  - api_id: index-operations
+    description: Operator routes for index status and reindexing.
+    openapi:
+      path: dcp/openapi/index-operations.openapi.yaml
+      media_type: application/vnd.oai.openapi+yaml
+      sha256: 9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b   # example hash
+    surfaces: [index-status, index-admin]
+    # Inside the document, each operation carries x-dcp-surface and x-dcp-access, for example:
+    #   /index/status:  get:  { x-dcp-surface: index-status, x-dcp-access: public, ... }
+    #   /index/rebuild: post: { x-dcp-surface: index-admin, x-dcp-access: protected,
+    #                           x-dcp-permission: search.index.rebuild, ... }
+    # The document has no servers, no security and no /dcp/ paths, and its $refs target only
+    # its own #/components/...; with an identity contract the projection renders bearer security on
+    # /index/rebuild and an explicit `security: []` on /index/status.
 
 metadata:
   dcp_version: 0.2.0-draft

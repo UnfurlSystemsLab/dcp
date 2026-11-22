@@ -27,6 +27,7 @@ should understand the protocol surfaces before reading field-level definitions.
 | [DCP Aggregation](specs/DCP-AGGREGATION.md) | Defines parent/child DCP references and recursive projection. | Draft |
 | [DCP Negotiation](specs/DCP-NEGOTIATION.md) | Defines question schemas and action-scoped design-time context. | Draft |
 | [DCP Documentation](specs/DCP-DOCUMENTATION.md) | Defines generated capability documentation from accepted DCP surfaces. | Draft |
+| [DCP HTTP Binding](specs/DCP-HTTP-BINDING.md) | Defines the `http_json` transport: service roots, invocation over HTTP, and the registration report. | Draft |
 
 ## Schema Set
 
@@ -40,6 +41,8 @@ should understand the protocol surfaces before reading field-level definitions.
 | [Negotiation question schema](schemas/negotiation-question.schema.yaml) | Plane 2 question structure |
 | [Action context schema](schemas/action-context.schema.yaml) | Design-time authoring/edit intent |
 | [Documentation projection schema](schemas/documentation-projection.schema.yaml) | Generated capability documentation from accepted DCP state |
+| [Registration report schema](schemas/registration-report.schema.yaml) | What a DCP HTTP host has registered right now |
+| [HTTP invocation schema](schemas/http-invocation.schema.yaml) | The `http_json` request and response envelope |
 
 Schemas are normative only when their owning specification says so. If a schema
 field is unclear, the owning spec and element page control the interpretation.
@@ -53,6 +56,8 @@ field is unclear, the owning spec and element page control the interpretation.
 | [refusals](elements/refusals.md) | DCP Claim |
 | [dependencies](elements/dependencies.md) | DCP Claim |
 | [offers](elements/offers.md) | DCP Claim |
+| [api_documents](elements/api-documents.md) | DCP Claim and DCP Documentation |
+| [artifact_ref](elements/artifact-ref.md) | DCP Claim |
 | [integration_ports](elements/integration-ports.md) | DCP Claim and Runtime Binding |
 | [conflict_resolution](elements/conflict-resolution.md) | DCP Claim |
 | [negotiation_surface](elements/negotiation-surface.md) | DCP Claim and DCP Negotiation |

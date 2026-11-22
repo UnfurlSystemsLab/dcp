@@ -27,6 +27,16 @@ stage.
 Secrets and environment-specific values MUST be referenced using secret/config
 references. Raw credentials MUST NOT appear in a DCP runtime binding.
 
+## 3A. Provider Endpoints
+
+A provider reached over the DCP HTTP binding (`container`, `remote_service` or
+`sidecar`) has an endpoint, given as `base_url` or `base_url_ref`, of exactly
+`<service_root>/dcp/<provider_capability>`. An `in_process` provider has no
+endpoint and is reached through its host. `external_saas` and `webapp`
+providers are not DCP-HTTP invocable. A binding that needs an endpoint and has
+none is incomplete. Documentation projection uses the binding as its only
+endpoint source. See [DCP HTTP Binding](DCP-HTTP-BINDING.md).
+
 ## 4. Child Bindings
 
 An aggregate runtime binding MAY reference child runtime bindings. This is the
@@ -41,4 +51,5 @@ accepted contract surface.
 ## 6. Change Impact
 
 This document extracts the runtime binding specification from the current schema
-source without changing binding semantics.
+source. Section 3A adds the endpoint-shape rule for HTTP-served providers
+(HLD-C2 C, G.3); bindings that already use that shape are unchanged.

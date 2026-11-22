@@ -114,6 +114,25 @@ properties:
           values: [experimental, evolving, stable, deprecated]
         version: { type: semver }
         cost_implications: { type: string, required: false }
+        documentation:
+          required_when: the offer is documented (DCP Documentation §3)
+          description: Invocation payload schemas for generated documentation; never matched by the resolver.
+          required: [operations]
+          properties:
+            summary: { type: string, required: false }
+            operations:
+              type: list
+              min_items: 1
+              item:
+                required: [operation, request_schema, response_schema]
+                properties:
+                  operation: { type: string, unique_within: documentation.operations, description: The exact invocation.operation value. }
+                  summary: { type: string, required: false }
+                  request_schema: { type: ref, ref: "#/definitions/artifact_ref", media_type: application/schema+json, root_type: object }
+                  response_schema: { type: ref, ref: "#/definitions/artifact_ref", media_type: application/schema+json, root_type: object }
+          rules:
+            - schemas describe input/output of one operation; the envelope's invocation.operation selects the operation
+            - a single operation that branches on an input field expresses it as a oneOf with mutually exclusive branches
 
   conflict_resolution:
     required: [overlapping_concerns, precedence_rules, requires_human_escalation]
@@ -134,3 +153,49 @@ properties:
 
   metadata:
     required: [dcp_version, claim_version]
+
+  api_documents:
+    type: list
+    required: false
+    description: OpenAPI documents for the component's product HTTP routes (not DCP invocations).
+    item:
+      required: [api_id, description, openapi, surfaces]
+      properties:
+        api_id: { type: string, format: kebab-case, unique_within: api_documents }
+        description: { type: string }
+        openapi:
+          type: ref
+          ref: "#/definitions/artifact_ref"
+          media_type: [application/vnd.oai.openapi+json, application/vnd.oai.openapi+yaml]
+        surfaces:
+          type: list
+          min_items: 1
+          item: { type: string, format: kebab-case }
+    rules:
+      - every operation carries x-dcp-surface naming one of surfaces
+      - every operation carries x-dcp-access, public or protected (no default); x-dcp-permission is optional
+      - no path starts with /dcp/
+      - no servers, security or components.securitySchemes
+      - every $ref targets the document's own #/components/<section>/<name>
+      - no two api_documents of one claim declare the same method and path (API_DOCUMENT_PATH_CONFLICT)
+      - path-level members other than parameters that several documents declare for one path are identical after component renaming (API_DOCUMENT_PATH_CONFLICT)
+
+definitions:
+  artifact_ref:
+    description: One file inside the artifact that carries the claim, pinned by content hash.
+    required: [path, media_type, sha256]
+    properties:
+      path:
+        type: string
+        format: relative-artifact-path
+        rules:
+          - not absolute, not empty, no URI scheme
+          - no "..", no "\\", no empty segments
+      media_type:
+        type: enum
+        values: [application/schema+json, application/vnd.oai.openapi+json, application/vnd.oai.openapi+yaml]
+      sha256: { type: string, pattern: "^[0-9a-f]{64}$" }
+    rules:
+      - readers verify sha256 against the file bytes before use; mismatch or missing file is a validation failure
+      - JSON Schema documents use draft 2020-12; OpenAPI documents use 3.1.0; both are self-contained
+      - JSON Schema $ref values are JSON Pointer fragments ("#" or "#/..."); $id, $anchor, $dynamicRef, $dynamicAnchor and $recursiveRef are not allowed

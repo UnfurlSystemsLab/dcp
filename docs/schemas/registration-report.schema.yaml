@@ -1,0 +1,51 @@
+schema_id: dcp.registration_report
+schema_version: 0.2.0-draft
+owning_spec: ../specs/DCP-HTTP-BINDING.md
+description: >-
+  What a DCP HTTP host has registered right now, served at GET <service_root>/dcp/registrations.
+
+required:
+  - component_uri
+  - component_version
+  - claim_hash
+  - observed_at
+  - registrations
+  - served_surfaces
+
+properties:
+  component_uri: { type: uri, description: The host's claim identity uri. }
+  component_version: { type: semver }
+  claim_hash: { type: string, pattern: "^[0-9a-f]{64}$", description: Canonical hash of the host's packaged claim. }
+  observed_at: { type: timestamp }
+  registrations:
+    type: list
+    item:
+      required: [contract_id, contract_version, capability, provider_claim_uri, provider_claim_version, provider_claim_hash, surface]
+      properties:
+        contract_id: { type: uri }
+        contract_version: { type: semver }
+        capability: { type: string }
+        provider_claim_uri: { type: uri, description: The host itself, or a component it hosts in process. }
+        provider_claim_version: { type: semver }
+        provider_claim_hash:
+          type: string
+          pattern: "^[0-9a-f]{64}$"
+          description: >-
+            surface http - equals the report's claim_hash; surface hosted_in_process - the hosted component's claim hash
+            as verified by the host against the contract's pin at admission.
+        surface:
+          type: enum
+          values: [http, hosted_in_process]
+        path: { type: string, required_when: surface == http, pattern: "^/dcp/.+$" }
+  served_surfaces:
+    type: list
+    item: { type: string, format: kebab-case }
+
+rules:
+  - lists only capabilities registered at the time of the report; revoked or invalidated contracts are absent
+  - for surface http, provider_claim_uri/version/hash equal component_uri/component_version/claim_hash
+  - a hosted component is never reported under the host's identity
+  - contains no inputs, outputs, credentials, secret references or caller data
+  - identity contract present => requires a bearer token with permission dcp.registrations.read
+  - no identity contract => unauthenticated on a trusted network
+  - response header Cache-Control is no-store

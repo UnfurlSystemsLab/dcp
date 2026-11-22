@@ -99,7 +99,13 @@ owning document controls.
 | Invalidation signal | A deterministic runtime signal emitted when evidence violates a frozen contract assumption. | [Core](specs/DCP-CORE.md), [Faults](specs/DCP-FAULTS.md) |
 | Propagation gate | The deterministic rule that decides whether a child fault affects a parent-visible need, dependency, constraint, offer, or service expectation. | [Faults](specs/DCP-FAULTS.md) |
 | Swagger/OpenAPI projection | A documentation projection for accepted HTTP capability surfaces only. | [Documentation](specs/DCP-DOCUMENTATION.md) |
-| Tool documentation projection | A documentation projection for accepted MCP/tool capability surfaces only. | [Documentation](specs/DCP-DOCUMENTATION.md) |
+| Tool documentation projection | A documentation projection for accepted MCP/tool capability surfaces only. Reserved: not emitted until tool surfaces define documentation fields. | [Documentation](specs/DCP-DOCUMENTATION.md) |
+| Service root | The base URL of a DCP HTTP host. It is derived from a runtime binding endpoint `<service_root>/dcp/<capability>` and never configured separately. | [HTTP Binding](specs/DCP-HTTP-BINDING.md) |
+| Registration report | What a DCP HTTP host has registered right now, served at `GET <service_root>/dcp/registrations`. It is the documentation projection's proof that a capability is registered. | [HTTP Binding](specs/DCP-HTTP-BINDING.md) |
+| Documentation entry | One child contract as seen by the documentation projection, with a status and a reason code. | [Documentation](specs/DCP-DOCUMENTATION.md) |
+| Documentation gap | A child contract that should be documented but whose offer has no `documentation` schemas. Generation fails; a schema is never inferred. | [Documentation](specs/DCP-DOCUMENTATION.md) |
+| Artifact reference | A file inside the component's own artifact, named by relative path and pinned by SHA-256 (`artifact_ref`). | [Claim](specs/DCP-CLAIM.md), [artifact_ref](elements/artifact-ref.md) |
+| API document | A shipped OpenAPI description of a component's product HTTP routes (`api_documents`). It describes routes and creates no contracts. | [Claim](specs/DCP-CLAIM.md), [api_documents](elements/api-documents.md) |
 
 ## Related Or Informative Terms
 

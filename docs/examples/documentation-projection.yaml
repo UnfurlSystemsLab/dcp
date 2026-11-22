@@ -1,0 +1,107 @@
+# Example: a documentation projection for a three-child composition.
+# Schema: ../schemas/documentation-projection.schema.yaml. Owning spec: ../specs/DCP-DOCUMENTATION.md.
+#
+# - document.search is HTTP-served, registered and documented.
+# - answer.generate is bound, but its host could not be reached, so it is reported, not documented.
+# - identity-context is an external surface: listed, never probed.
+#
+# Because the verified set contains an identity contract, `identity` is in_contract and the
+# rendered OpenAPI for documented operations carries an OAuth 2.0 bearer requirement. In a
+# composition without an identity contract, `identity` is absent, no security scheme is
+# rendered, and the summary states that the composition runs unauthenticated on a trusted network.
+document_id: dcp://documentation/dev/example-rag-service
+target_environment:
+  environment: dev
+  tenant: tenant-example
+source:
+  root_contract: dcp://contracts/dev/example-rag-service
+  contracts:
+    - dcp://contracts/dev/example-rag-service/document-search
+    - dcp://contracts/dev/example-rag-service/answer-generate
+    - dcp://contracts/dev/example-rag-service/identity-context
+  runtime_bindings:
+    - dcp://bindings/dev/example-search-tool
+    - dcp://bindings/dev/example-answer-agent
+    - dcp://bindings/dev/example-identity
+  registered_capabilities: [document.search]
+identity: in_contract
+surfaces:
+  - kind: openapi
+    visibility: internal
+    includes: [document.search, index-operations]
+  - kind: human_summary
+    visibility: internal
+    includes: [document.search, answer.generate, identity-context]
+components:
+  - component_uri: dcp://components/example-search-tool
+    component_version: 0.1.0
+    name: Example Search Tool
+    claim_hash: 3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d   # example hash
+    service_root: http://search-tool:8080
+    protected: true            # the identity contract names this component as an audience
+    capabilities:
+      - capability: document.search
+        capability_version: 0.1.0
+        description: Search configured documents and return matching document references.
+        contract_id: dcp://contracts/dev/example-rag-service/document-search
+        binding_id: dcp://bindings/dev/example-search-tool
+        surface: http
+        visibility: internal
+        path: /dcp/document.search
+        provider_component_uri: dcp://components/example-search-tool
+        provider_component_version: 0.1.0
+        operations:
+          - operation: document.search
+            request_schema:
+              path: dcp/schemas/document.search.request.schema.json
+              media_type: application/schema+json
+              sha256: 5f2b0c8e3a1d4e6f7a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f   # example hash
+            response_schema:
+              path: dcp/schemas/document.search.response.schema.json
+              media_type: application/schema+json
+              sha256: 0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0a1b   # example hash
+        faults: [index-unavailable]
+    api_documents:
+      - api_id: index-operations
+        openapi:
+          path: dcp/openapi/index-operations.openapi.yaml
+          media_type: application/vnd.oai.openapi+yaml
+          sha256: 9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b   # example hash
+        visibility: internal
+        served_surfaces: [index-status]
+report:
+  entries:
+    - contract_id: dcp://contracts/dev/example-rag-service/document-search
+      binding_id: dcp://bindings/dev/example-search-tool
+      capability: document.search
+      provider_component_uri: dcp://components/example-search-tool
+      surface: http
+      status: active
+      reason: ACTIVE
+      endpoint: http://search-tool:8080/dcp/document.search
+      observed_at: 2026-11-22T10:00:00Z
+    - contract_id: dcp://contracts/dev/example-rag-service/answer-generate
+      binding_id: dcp://bindings/dev/example-answer-agent
+      capability: answer.generate
+      provider_component_uri: dcp://components/example-answer-agent
+      surface: http
+      status: inactive
+      reason: PROVIDER_UNREACHABLE
+      detail: connection refused
+      endpoint: http://answer-agent:7979/dcp/answer.generate
+      observed_at: 2026-11-22T10:00:00Z
+    - contract_id: dcp://contracts/dev/example-rag-service/identity-context
+      binding_id: dcp://bindings/dev/example-identity
+      capability: identity-context
+      provider_component_uri: dcp://components/example-identity-adapter
+      surface: external
+      status: not_probed
+      reason: EXTERNAL_SURFACE
+  api_operations:
+    - component_uri: dcp://components/example-search-tool
+      api_id: index-operations
+      operation: POST /index/rebuild
+      reason: SURFACE_NOT_SERVED
+lifecycle:
+  generated_by: example-documentation-projector
+  generated_at: 2026-11-22T10:00:05Z
