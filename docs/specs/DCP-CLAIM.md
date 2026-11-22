@@ -55,6 +55,10 @@ allow it.
 Offer versions MUST use semantic versioning. Consumer requirements use semantic
 version ranges.
 
+An offer's capability MUST NOT be `registrations`. The DCP HTTP binding
+reserves that name for `GET <service_root>/dcp/registrations` (DCP HTTP Binding
+§4).
+
 An offer MAY carry `documentation`: a non-empty list of `operations`, one per
 `invocation.operation` value the offer accepts. Each operation has a
 `request_schema` for its `input` and a `response_schema` for its successful

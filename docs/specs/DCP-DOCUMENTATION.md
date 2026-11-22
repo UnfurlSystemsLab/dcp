@@ -108,6 +108,10 @@ A capability with several operations is rendered at the envelope level:
 - with several operations, the response is an `anyOf` of the per-operation results;
 - `x-dcp-operations` maps each operation to its pair.
 
+Every document also describes `GET /dcp/registrations` (DCP HTTP Binding §4).
+Its `200` response is the registration report, embedded as the schema
+`dcp.registrations.report`, with a `Cache-Control: no-store` header.
+
 Capabilities a host runs in process are rendered in the host's document under
 `x-dcp-hosted-capabilities`, from the hosted components' own verified claims
 and artifacts. Only currently registered capabilities are rendered. A host that
@@ -125,7 +129,8 @@ Security is rendered per operation.
 
 - **The verified set contains an identity contract.** A protected provider's
   DCP operations, and its product operations marked
-  `x-dcp-access: protected`, carry an OAuth 2.0 bearer requirement. Operations
+  `x-dcp-access: protected`, carry an OAuth 2.0 bearer requirement. Its
+  `GET /dcp/registrations` also names `x-dcp-permission: dcp.registrations.read`. Operations
   marked `x-dcp-access: public` carry an explicit empty requirement
   (`security: []`).
 - **It does not.** No operation carries security, and the output states that the

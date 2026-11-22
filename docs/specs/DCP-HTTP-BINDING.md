@@ -68,6 +68,12 @@ Every DCP HTTP host MUST serve it. It lists contracts only: no inputs, outputs,
 credentials, secret references or caller data. A revoked or invalidated contract
 is absent. The response carries `Cache-Control: no-store`.
 
+Enumeration values are lower case (`surface: http | hosted_in_process`).
+
+The capability name `registrations` is reserved, so the report never collides
+with an invoke path. A claim that offers a capability with that name is invalid.
+Every host's OpenAPI document describes this route (DCP Documentation §4A).
+
 ## 5. Identity
 
 Identity follows the signed composition, never configuration.

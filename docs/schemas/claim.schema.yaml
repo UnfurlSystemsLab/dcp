@@ -97,7 +97,11 @@ properties:
     item:
       required: [capability, description, consumer_access, interface, stability, version]
       properties:
-        capability: { type: string, format: kebab-case, unique_within: offers }
+        capability:
+          type: string
+          format: kebab-case
+          unique_within: offers
+          reserved: [registrations]   # the DCP HTTP binding's GET <service_root>/dcp/registrations (HLD-C2 G.3)
         description: { type: string }
         consumer_access:
           type: enum

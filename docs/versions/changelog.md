@@ -56,8 +56,17 @@ This file records public specification changes for the DCP repository.
   and `provider_component_version`; `root_contract` and `binding_id` are absent
   in a host view.
 
+- Every rendered OpenAPI document describes `GET /dcp/registrations`, with the
+  registration report schema `dcp.registrations.report` and, for a protected
+  component, the bearer requirement and `x-dcp-permission:
+  dcp.registrations.read` (HLD-C2 G.2; DCP Documentation §4A).
+- `registrations` is a reserved capability name (HLD-C2 G.3; DCP HTTP Binding §4).
+
 ### Changed
 
+- HLD-C2 G.2 states that enumeration values in the projection and the
+  registration report are written in lower case, as the schemas list them, and
+  reason codes in upper case.
 - `documentation-projection.schema.yaml` now models the HLD-C2 G.2 output
   (`source.root_contract`, `identity`, `components`, `report`) in place of the
   earlier `source_contract` / `source_binding` / `outputs` / `filters` sketch.
