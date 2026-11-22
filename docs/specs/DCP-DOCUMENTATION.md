@@ -108,6 +108,14 @@ A capability with several operations is rendered at the envelope level:
 - with several operations, the response is an `anyOf` of the per-operation results;
 - `x-dcp-operations` maps each operation to its pair.
 
+A component that serves one capability under several contracts renders it as
+one operation (one path, one offer): `x-dcp-contracts` lists the contract ids in
+sorted order, and the envelope's `invocation.contractId` is an `enum` of them.
+Hosted capabilities are grouped the same way, by provider component and
+capability, with a sorted `contracts` list. Grouped entries that disagree on
+the provider, description, operations or faults fail rendering with
+`CAPABILITY_DOCUMENTATION_CONFLICT`. The report keeps one entry per contract.
+
 Every document also describes `GET /dcp/registrations` (DCP HTTP Binding §4).
 Its `200` response is the registration report, embedded as the schema
 `dcp.registrations.report`, with a `Cache-Control: no-store` header.

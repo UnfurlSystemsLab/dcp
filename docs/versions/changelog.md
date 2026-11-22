@@ -64,6 +64,12 @@ This file records public specification changes for the DCP repository.
 
 ### Changed
 
+- A capability served under several contracts renders as one OpenAPI operation
+  (HLD-C2 G.2; DCP Documentation §4A): `x-dcp-contracts` (a sorted array)
+  replaces the single `x-dcp-contract`, `invocation.contractId` is an `enum` of
+  those ids, and hosted items carry `contracts` in place of `contract`.
+  Disagreeing entries fail with `CAPABILITY_DOCUMENTATION_CONFLICT`.
+
 - HLD-C2 G.2 states that enumeration values in the projection and the
   registration report are written in lower case, as the schemas list them, and
   reason codes in upper case.
