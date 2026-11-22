@@ -33,7 +33,10 @@ A provider reached over the DCP HTTP binding (`container`, `remote_service` or
 `sidecar`) has an endpoint, given as `base_url` or `base_url_ref`, of exactly
 `<service_root>/dcp/<provider_capability>`. An `in_process` provider has no
 endpoint and is reached through its host. `external_saas` and `webapp`
-providers are not DCP-HTTP invocable. A binding that needs an endpoint and has
+providers are not DCP-HTTP invocable, and neither is a provider whose offer is
+`external_protocol`, whatever its deployment kind: its binding has no
+`base_url`, and the protocol's endpoints are configuration values and
+references. A binding that needs an endpoint and has
 none is incomplete. Documentation projection uses the binding as its only
 endpoint source. See [DCP HTTP Binding](DCP-HTTP-BINDING.md).
 

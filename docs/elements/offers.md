@@ -22,7 +22,11 @@ binders, documentation projectors, and consumers read them.
 - `capability`: stable capability name.
 - `description`: human-readable explanation.
 - `consumer_access`: `any` or `named_components_only`.
-- `interface.kind`: `http_api`, `event_stream`, `negotiation`, or `in_process`.
+- `interface.kind`: `http_api`, `event_stream`, `negotiation`, `in_process`, or
+  `external_protocol`. An `external_protocol` offer is reached over a standard
+  protocol of the provider's own (for example OAuth 2.0 for `identity-context`),
+  never through the DCP invocation envelope; its `details` name it in
+  `protocol` (for example `oauth2`).
 - `interface.details`: deterministic kind-specific map.
 - `stability`: `experimental`, `evolving`, `stable`, or `deprecated`.
 - `version`: semantic version.
@@ -62,6 +66,8 @@ documentation gap and generation fails; a schema is never inferred.
   `application/schema+json`, or whose `sha256` does not match the file.
 - One schema for several operations that tries to branch on the operation name;
   the operation is outside `input`, so list one entry per operation instead.
+- An `external_protocol` offer without a non-blank `details.protocol`, or with
+  `documentation` (it has no DCP payload).
 - A payload schema whose root is not an object (for example plain text); wrap
   it, as in `{"markdown": "..."}`.
 
