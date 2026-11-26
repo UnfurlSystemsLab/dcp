@@ -110,17 +110,22 @@ integration_ports:
     cost_metered: true
 
 faults:
-  - code: child-capability-unavailable
-    description: A required child DCP capability is unavailable.
-    severity: blocking
-    affects:
-      - kind: offer
-        name: rag.answer
-    evidence:
-      - signal: child_binding_unhealthy
-        description: Runtime binding health check for a required child failed.
-    propagation:
-      default_action: propagate
+  emitted:
+    - code: child-capability-unavailable
+      category: DEPENDENCY
+      severity: BLOCKING
+      description: A required child DCP capability is unavailable.
+      affects:
+        needs: []
+        offers: [rag.answer]
+        constraints: []
+      evidence:
+        signals: [HEALTH]
+      propagation:
+        parent_impact: BLOCKED
+        propagates_when: a runtime binding health check for a required child fails
+      remediation:
+        allowed_actions: [rebind_child]
 
 metadata:
   dcp_version: 0.2.0-draft

@@ -10,7 +10,8 @@
 
 ## Required
 
-Yes. The list MAY be empty if no DCP-visible fault vocabulary is declared.
+Yes, as `faults: { emitted: [...] }`. The `emitted` list MAY be empty if no
+DCP-visible fault vocabulary is declared.
 
 ## Writers And Readers
 
@@ -19,18 +20,25 @@ aggregates, and documentation projectors read it.
 
 ## Fields
 
-- `code`: stable fault code.
+Each `emitted` entry follows [`fault.schema.yaml`](../schemas/fault.schema.yaml)
+(HLD-C2 A.10):
+
+- `code`: stable fault code, unique within the claim.
+- `category`: the kind of fault, for example `RUNTIME` or `DEPENDENCY`.
+- `severity`: `INFO`, `WARNING`, `DEGRADED`, `CRITICAL` or `BLOCKING`.
 - `description`: human-readable explanation.
-- `severity`: operational severity.
-- `affects`: affected needs, offers, dependencies, constraints, ports, or
-  service expectations.
-- `evidence`: runtime signals that justify the fault.
-- `propagation`: deterministic propagation behavior.
-- `remediation`: allowed remediation actions.
+- `affects`: the declared `needs`, `offers` and `constraints` it affects, at
+  least one non-empty.
+- `evidence.signals`: the runtime signal kinds that justify the fault.
+- `propagation`: `parent_impact` (`NONE`, `DEGRADED`, `BLOCKED`),
+  `propagates_when` (required unless `NONE`) and an optional `suppresses_when`.
+- `remediation.allowed_actions`: the actions the runtime or operator may take.
 
 ## Composition Behavior
 
-Faults propagate to a parent only when they affect a parent-visible surface.
+A fault escalates to its parent aggregate only as its `propagation` declares:
+`parent_impact` says how the parent is affected, and `propagates_when` is the
+condition evaluated before escalating.
 Runtime MUST hard-fail and emit invalidation when a fault violates a frozen
 contract assumption.
 

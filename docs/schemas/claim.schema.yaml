@@ -197,7 +197,12 @@ properties:
     description: References to child claims for DCP aggregation.
 
   faults:
-    type: list
+    required: [emitted]
+    description: The declared fault vocabulary (HLD-C2 A.10); present even when emitted is empty.
+    properties:
+      emitted:
+        type: list
+        item: { type: ref, ref: "fault.schema.yaml" }
 
   metadata:
     required: [dcp_version, claim_version]

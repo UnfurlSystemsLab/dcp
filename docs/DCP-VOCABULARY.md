@@ -97,7 +97,7 @@ owning document controls.
 | Runtime provider | The environment-specific provider endpoint or implementation selected by the runtime binding for an accepted contract provider. | [Runtime Binding](specs/DCP-RUNTIME-BINDING.md) |
 | Runtime verification | Checks that the contract, runtime binding, provider references, ports, secrets, and config references are present and consistent before execution. | [Runtime Binding](specs/DCP-RUNTIME-BINDING.md) |
 | Invalidation signal | A deterministic runtime signal emitted when evidence violates a frozen contract assumption. | [Core](specs/DCP-CORE.md), [Faults](specs/DCP-FAULTS.md) |
-| Propagation gate | The deterministic rule that decides whether a child fault affects a parent-visible need, dependency, constraint, offer, or service expectation. | [Faults](specs/DCP-FAULTS.md) |
+| Propagation gate | The deterministic rule `(claim.faults, fault_signal) -> propagate, suppress or reject` that decides whether a declared child fault escalates to its parent, by its `parent_impact` and `propagates_when`. | [Faults](specs/DCP-FAULTS.md) |
 | Swagger/OpenAPI projection | A documentation projection for accepted HTTP capability surfaces only. | [Documentation](specs/DCP-DOCUMENTATION.md) |
 | Tool documentation projection | A documentation projection for accepted MCP/tool capability surfaces only. Reserved: not emitted until tool surfaces define documentation fields. | [Documentation](specs/DCP-DOCUMENTATION.md) |
 | Service root | The base URL of a DCP HTTP host. It is derived from a runtime binding endpoint `<service_root>/dcp/<capability>` and never configured separately. | [HTTP Binding](specs/DCP-HTTP-BINDING.md) |

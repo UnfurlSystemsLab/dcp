@@ -16,31 +16,44 @@ Faults are not untyped logs. They are part of the claim boundary.
 
 ## 2. Fault Declaration
 
-A claim MUST include a `faults` section. It MAY be empty when the component has
-no declared DCP-visible fault vocabulary.
+A claim MUST include `faults: { emitted: [...] }`. The list MAY be empty when the
+component has no declared DCP-visible fault vocabulary. Each entry follows
+[`fault.schema.yaml`](../schemas/fault.schema.yaml), which is HLD-C2 A.10:
 
-Each declared fault SHOULD include:
+- `code`: a stable machine code, unique within the claim;
+- `category`: `DEPENDENCY`, `CAPABILITY`, `CONSTRAINT`, `HEALTH`, `SECURITY`,
+  `POLICY` or `RUNTIME`;
+- `severity`: `INFO`, `WARNING`, `DEGRADED`, `CRITICAL` or `BLOCKING`;
+- `description`;
+- `affects`: the declared `needs`, `offers` and `constraints` the fault affects,
+  at least one of them non-empty;
+- `evidence.signals`: `HEALTH`, `INVOCATION_ERROR`, `METRIC_THRESHOLD`,
+  `POLICY_DENIAL`, `CONTRACT_INVALIDATION` or `EXTERNAL_EVENT`;
+- `propagation`: `parent_impact` (`NONE`, `DEGRADED` or `BLOCKED`), with
+  `propagates_when` required unless it is `NONE`, and an optional
+  `suppresses_when`;
+- `remediation.allowed_actions`: only actions the claim boundary or host policy
+  already permits.
 
-- stable fault code;
-- description;
-- severity;
-- affected needs, offers, constraints, or ports;
-- evidence signals;
-- propagation policy;
-- remediation actions when allowed.
+Enum values are written upper case on the wire; field names are snake_case.
 
 ## 3. Propagation Gate
 
-A child fault propagates upward only when the declared fault affects a
-parent-visible need, dependency, constraint, offer, or service expectation.
+A child fault escalates to its parent aggregate only as its declared
+`propagation` says: `parent_impact` is the impact on the parent (`DEGRADED` or
+`BLOCKED`; `NONE` never escalates), `propagates_when` is the condition a runtime
+or parent resolver evaluates before escalating, and `suppresses_when` is the
+condition under which it does not.
 
 The propagation decision MUST be deterministic:
 
 ```text
-declared fault vocabulary + observed signal -> propagate | suppress | reject
+(claim.faults, fault_signal) -> propagate | suppress | reject
 ```
 
-The propagation gate MUST NOT perform design-time negotiation.
+An observed signal for an undeclared fault is rejected. The propagation gate
+MUST NOT perform design-time negotiation, and never renegotiates a contract in
+the runtime path.
 
 ## 4. Invalidation
 
