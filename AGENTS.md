@@ -173,7 +173,8 @@ spec-first structure now exists, but these files remain source material while
 the public pages are refined:
 
 - `docs/HLD-C-dcp-v0.2-internal.md`
-- `docs/HLD-C2-dcp-schema-spec-updated.md`
+- `unfurl-dcp/docs/HLD-C2-dcp-schema-spec-updated.md`, the authoritative schema specification (https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md);
+  `docs/HLD-C2-dcp-schema-spec-updated.md` here only points to it
 
 When restructuring, preserve meaning first, then improve shape. Do not delete
 technical content merely because it has not yet been fully reconciled with the

@@ -3,7 +3,7 @@
 **Status:** Draft.
 **Plane:** Documentation projection.
 **Schemas:** `docs/schemas/documentation-projection.schema.yaml`, `docs/schemas/registration-report.schema.yaml`.
-**Source material:** `docs/HLD-C2-dcp-schema-spec-updated.md`, section G (and A.6, A.12, A.13).
+**Source material:** [`unfurl-dcp` HLD-C2](https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md), section G (and A.6, A.12, A.13).
 
 ## 1. Purpose
 

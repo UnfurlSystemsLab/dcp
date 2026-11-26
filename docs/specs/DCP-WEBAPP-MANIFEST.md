@@ -4,7 +4,7 @@
 **Plane:** Description projection.
 **Schema:** `docs/schemas/webapp-manifest.schema.yaml`.
 **Source material:** `docs/HLD-C-dcp-v0.2-internal.md`, section 4, and
-`docs/HLD-C2-dcp-schema-spec-updated.md`, section D.
+[`unfurl-dcp` HLD-C2](https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md), section D.
 
 ## 1. Purpose
 

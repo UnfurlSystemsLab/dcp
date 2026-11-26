@@ -90,7 +90,7 @@ not define DCP behavior before the protocol documents define it.
 The repository was seeded from two larger internal documents:
 
 - [DCP v0.2 internal specification](HLD-C-dcp-v0.2-internal.md)
-- [DCP schema specification](HLD-C2-dcp-schema-spec-updated.md)
+- [DCP schema specification](https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md) (authoritative copy, in `unfurl-dcp`)
 
 Those files remain as source material while the public spec set is split into
 the documents above. If there is a conflict during the transition, prefer the

@@ -19,15 +19,21 @@ Component authors write claim-level port requirements. Deployment authors and
 runtime binders write concrete binding references. Resolvers, operators, and
 documentation projectors read them.
 
-## Common Ports
+## Ports
 
-- `authentication`
-- `authorization`
-- `telemetry`
-- `monitoring`
-- `secrets`
-- `configuration`
-- `ai`
+The claim's typed integration surfaces (HLD-C2 A.9), each optional; an absent one is not declared, never a default:
+
+- `authentication`: whether a caller must authenticate, and the accepted modes
+- `authorization`: whether authorization is checked, who decides, and the permission prefixes
+- `telemetry`: the signals the component really emits, and whether it needs a correlation id
+- `monitoring`: the health endpoints it serves (absolute paths, never URLs), and its readiness and liveness checks
+- `ai`: whether it needs AI capability to operate, and how it reaches a model
+
+Beside them, `ports` is the component's own named wiring (for example a host's runtime ports, name to implementation
+type). DCP carries it unchanged and never interprets it.
+
+Secrets and configuration are not claim ports: a deployment supplies them in the runtime binding's `configuration`
+(`config_refs`, `secret_refs`), as references only.
 
 ## Composition Behavior
 

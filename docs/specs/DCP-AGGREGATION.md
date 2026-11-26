@@ -3,7 +3,7 @@
 **Status:** Draft.
 **Plane:** Description, negotiation, and runtime binding.
 **Source material:** dynamic composite model in `docs/HLD-C-dcp-v0.2-internal.md`
-and recursive projection notes in `docs/HLD-C2-dcp-schema-spec-updated.md`.
+and recursive projection notes in [`unfurl-dcp` HLD-C2](https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md).
 
 ## 1. Purpose
 

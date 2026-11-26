@@ -3,7 +3,7 @@
 **Status:** Draft.
 **Plane:** Invocation (transport binding).
 **Schemas:** `docs/schemas/http-invocation.schema.yaml`, `docs/schemas/registration-report.schema.yaml`.
-**Source material:** `docs/HLD-C2-dcp-schema-spec-updated.md`, sections C and G.3; `docs/HLD-C-dcp-v0.2-internal.md` §6.
+**Source material:** [`unfurl-dcp` HLD-C2](https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md), sections C and G.3; `docs/HLD-C-dcp-v0.2-internal.md` §6.
 
 ## 1. Purpose
 

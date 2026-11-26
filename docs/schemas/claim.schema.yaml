@@ -148,6 +148,48 @@ properties:
 
   integration_ports:
     required: false
+    description: >-
+      The component's own named wiring (ports, opaque to DCP) and the typed integration surfaces (HLD-C2 A.9). Each
+      typed port is optional; an absent one is not declared and is never read as a default. Enum values are listed in
+      specification notation, like every enum in these shapes; the unfurl-dcp codecs write them upper case (HLD-C2 A.9).
+    properties:
+      ports: { type: map, required: false, description: The component's own named port wiring; never interpreted by DCP. }
+      authentication:
+        required: false
+        properties:
+          required: { type: bool }
+          accepted_modes: { type: list, item: { type: enum, values: [jwt, oidc, api_key, mtls, session_cookie] }, unique: true }
+          notes: { type: string, required: false }
+      authorization:
+        required: false
+        properties:
+          required: { type: bool }
+          decision_owner: { type: enum, values: [self, external_policy, host_application, not_applicable] }
+          permission_prefixes: { type: list, item: { type: string }, required: false, unique: true }
+          notes: { type: string, required: false }
+      telemetry:
+        required: false
+        properties:
+          required: { type: bool }
+          signals: { type: list, item: { type: enum, values: [logs, metrics, traces, audit_events] }, unique: true }
+          correlation_id_required: { type: bool }
+          notes: { type: string, required: false }
+      monitoring:
+        required: false
+        properties:
+          required: { type: bool }
+          health_endpoints: { type: list, item: { type: string, format: absolute-path }, required: false, unique: true }
+          readiness_required: { type: bool }
+          liveness_required: { type: bool }
+          notes: { type: string, required: false }
+      ai:
+        required: false
+        properties:
+          required: { type: bool }
+          intents: { type: list, item: { type: string }, required: false, unique: true }
+          model_access: { type: enum, values: [none, external_provider, embedded_model, host_provided], required: false }
+          cost_metered: { type: bool, required: false }
+          notes: { type: string, required: false }
 
   child_claims:
     type: list

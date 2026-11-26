@@ -3,7 +3,7 @@
 **Status:** Draft.
 **Plane:** Description.
 **Schema:** `docs/schemas/claim.schema.yaml`.
-**Source material:** `docs/HLD-C2-dcp-schema-spec-updated.md`, section A.
+**Source material:** [`unfurl-dcp` HLD-C2](https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md), section A.
 
 ## 1. Purpose
 
@@ -99,10 +99,12 @@ routes only; they never create contracts.
 
 ## 5. Ports
 
-`integration_ports` names common enterprise integration concerns such as
-authentication, authorization, telemetry, monitoring, secrets/configuration, and
-AI/model access. Ports describe dependencies and expectations; they do not
-implement those concerns.
+`integration_ports` names common enterprise integration concerns: authentication,
+authorization, telemetry, monitoring and AI/model access, each typed and optional
+(an absent port is not declared). Ports describe dependencies and expectations;
+they do not implement those concerns. Beside them, `ports` carries the
+component's own named wiring, which DCP never interprets. Secrets and
+configuration are supplied by the runtime binding, not declared as claim ports.
 
 ## 6. Child Claims
 
