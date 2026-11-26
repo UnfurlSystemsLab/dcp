@@ -3,7 +3,7 @@
 **Status:** Draft.
 **Plane:** Negotiation output.
 **Schema:** `docs/schemas/contract.schema.yaml`.
-**Source material:** `docs/HLD-C2-dcp-schema-spec-updated.md`, section B.
+**Source material:** [`unfurl-dcp` HLD-C2](https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md), section B.
 
 ## 1. Purpose
 

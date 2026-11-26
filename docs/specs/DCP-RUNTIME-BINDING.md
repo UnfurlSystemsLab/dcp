@@ -3,7 +3,7 @@
 **Status:** Draft.
 **Plane:** Deployment/runtime projection.
 **Schema:** `docs/schemas/runtime-binding.schema.yaml`.
-**Source material:** `docs/HLD-C2-dcp-schema-spec-updated.md`, section C.
+**Source material:** [`unfurl-dcp` HLD-C2](https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md), section C.
 
 ## 1. Purpose
 

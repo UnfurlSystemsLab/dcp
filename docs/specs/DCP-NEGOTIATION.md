@@ -3,7 +3,7 @@
 **Status:** Draft.
 **Plane:** Negotiation.
 **Source material:** `docs/HLD-C-dcp-v0.2-internal.md`, section 5, and
-`docs/HLD-C2-dcp-schema-spec-updated.md`, sections E and F.
+[`unfurl-dcp` HLD-C2](https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md), sections E and F.
 
 ## 1. Purpose
 
