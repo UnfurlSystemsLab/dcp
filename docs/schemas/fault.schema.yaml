@@ -1,59 +1,68 @@
 schema_id: dcp.fault
 schema_version: 0.2.0-draft
 owning_spec: ../specs/DCP-FAULTS.md
-description: Declared DCP-visible fault vocabulary and propagation policy.
+authority: https://github.com/UnfurlSystemsLab/unfurl-dcp/blob/master/docs/HLD-C2-dcp-schema-spec-updated.md#a10-faults-required-may-be-empty
+description: >
+  One declared DCP fault in a claim's faults.emitted list (HLD-C2 A.10, the authoritative definition). Enum values are
+  written upper case on the wire; field names are snake_case.
 
 required:
   - code
-  - description
+  - category
   - severity
+  - description
   - affects
   - evidence
   - propagation
+  - remediation
 
 properties:
-  code: { type: string, format: kebab-case }
-  description: { type: string }
+  code:
+    type: string
+    unique_within: claim.faults.emitted
+    description: Stable machine code, for example storage.timeout.
+  category:
+    type: enum
+    values: [DEPENDENCY, CAPABILITY, CONSTRAINT, HEALTH, SECURITY, POLICY, RUNTIME]
   severity:
     type: enum
-    values: [info, warning, degraded, blocking, critical]
+    values: [INFO, WARNING, DEGRADED, CRITICAL, BLOCKING]
+  description: { type: string }
 
   affects:
-    type: list
-    item:
-      required: [kind, name]
-      properties:
-        kind:
-          type: enum
-          values: [need, offer, dependency, constraint, port, service_expectation]
-        name: { type: string }
+    description: The declared surfaces the fault affects; at least one of the three lists is non-empty.
+    rule: at_least_one_non_empty
+    properties:
+      needs: { type: list, item: { type: string }, description: Declared needs affected by this fault. }
+      offers: { type: list, item: { type: string }, description: Declared offers (capabilities) affected by this fault. }
+      constraints: { type: list, item: { type: string }, description: Declared constraints affected by this fault. }
 
   evidence:
-    type: list
-    min_items: 1
-    item:
-      required: [signal, description]
-      properties:
-        signal: { type: string }
-        description: { type: string }
+    properties:
+      signals:
+        type: list
+        item:
+          type: enum
+          values: [HEALTH, INVOCATION_ERROR, METRIC_THRESHOLD, POLICY_DENIAL, CONTRACT_INVALIDATION, EXTERNAL_EVENT]
 
   propagation:
-    required: [default_action]
+    required: [parent_impact]
     properties:
-      default_action:
+      parent_impact:
         type: enum
-        values: [propagate, suppress, reject]
-      parent_visible_when:
-        type: list
+        values: [NONE, DEGRADED, BLOCKED]
+      propagates_when:
+        type: string
+        required_when: parent_impact != NONE
+        description: The deterministic gate condition a runtime or parent resolver evaluates before escalating upward.
+      suppresses_when:
+        type: string
         required: false
+        description: Optional suppression condition.
 
   remediation:
-    type: list
-    required: false
-    item:
-      required: [action, boundary]
-      properties:
-        action: { type: string }
-        boundary:
-          type: enum
-          values: [within_claim, operator_required, renegotiation_required]
+    properties:
+      allowed_actions:
+        type: list
+        item: { type: string }
+        description: Declared actions the runtime or operator may take; only actions the claim boundary or host policy permits.
