@@ -44,5 +44,7 @@ state. The referenced DCP construct is the standard aggregation pattern.
 
 ## 6. Change Impact
 
-This document records aggregation as a first-class DCP spec. It does not add a
-new schema field beyond existing child/reference concepts.
+This document records aggregation as a first-class DCP spec. Claims declare
+their children in the first-class `child_claims` section (HLD-C2 A.14, see
+[child_claims](../elements/child-claims.md)). Contracts and runtime bindings keep
+the containment bridge in `metadata.extensions` for their own trees.

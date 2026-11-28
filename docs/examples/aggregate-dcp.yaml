@@ -21,11 +21,11 @@ domain:
 
 child_claims:
   - claim_uri: dcp://components/example-search-tool
-    role: retrieval-provider
     required: true
+    description: Retrieval provider.
   - claim_uri: dcp://components/example-answer-agent
-    role: answer-provider
     required: true
+    description: Answer provider.
 
 refusals:
   - concern: source-document-authorization
