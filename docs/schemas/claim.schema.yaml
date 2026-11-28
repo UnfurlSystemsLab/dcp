@@ -194,7 +194,20 @@ properties:
   child_claims:
     type: list
     required: false
-    description: References to child claims for DCP aggregation.
+    description: >-
+      The components an aggregate component is built from (HLD-C2 A.14), its declared containment. Each child is a
+      normal component with its own claim; the aggregate never restates or re-exports it.
+    item:
+      required: [claim_uri, required]
+      properties:
+        claim_uri: { type: uri, unique_within: child_claims, description: "the child's identity.uri" }
+        required: { type: bool, description: "true when the aggregate cannot run without the child; no default" }
+        description: { type: string, required: false, description: "the child's role in the aggregate" }
+    rules:
+      - claim_uri is never the claim's own identity.uri (CLAIM_CHILD_CLAIM_INVALID)
+      - a claim declares its children in child_claims or in the metadata.extensions containment bridge, never both (CLAIM_CHILD_CLAIM_INVALID)
+      - a composition that selects the aggregate selects every required child; an optional child may be absent, and then its artifact is not part of the composition
+      - child_claims is part of the canonical claim hash, in list order; a claim without it keeps its hash
 
   faults:
     required: [emitted]

@@ -6,12 +6,14 @@
 
 ## Meaning
 
-`child_claims` references child DCP claims used by an aggregate claim. It is the
-standard way to express recursive DCP composition.
+`child_claims` names the components an aggregate component is built from: its
+declared containment (HLD-C2 A.14). Each child is a normal component with its own
+claim, artifact, offers, needs and faults. It is the standard way to express
+recursive DCP composition for claims.
 
 ## Required
 
-Optional. Required only when a parent claim's capability depends on child DCPs.
+Optional. An aggregate component writes it; any other component does not.
 
 ## Writers And Readers
 
@@ -20,23 +22,40 @@ generation, runtime binding, and review tools read them.
 
 ## Fields
 
-- `claim_uri`: child claim URI.
-- `role`: role the child plays in the parent aggregate.
-- `required`: whether the parent capability requires the child.
-- optional policy or scope fields when the parent accepts multiple children.
+- `claim_uri` (required): the child's `identity.uri`, unique within the list.
+- `required` (required, no default): `true` when the aggregate cannot run without
+  the child.
+- `description` (optional): the child's role in the aggregate.
 
 ## Composition Behavior
 
-Projection walks child references deterministically. Parent contracts reference
-child contracts, and parent runtime bindings reference child bindings. Child
-refusals and faults remain active unless the child claim changes.
+- A composition that selects the aggregate must also select every required child.
+  A composer refuses it otherwise, naming the aggregate and the missing child.
+- An optional child may be absent. The aggregate runs without it, and neither the
+  child nor its artifact is part of the composition.
+- Projection draws each selected child under its aggregate, deterministically.
+  Parent contracts reference child contracts, and parent runtime bindings
+  reference child bindings.
+- Child refusals and faults remain active unless the child claim changes. The
+  aggregate never restates or re-exports a child's claim.
+- `child_claims` is part of the canonical claim hash. A claim without it keeps
+  its hash.
 
 ## Invalid Values
 
-- Child references that cannot be resolved.
-- Cyclic references.
-- Hiding child contracts behind product-specific extension blocks.
-- Parent offers that depend on children without recording the child reference.
+All of these are `CLAIM_CHILD_CLAIM_INVALID`:
+- a missing `claim_uri`;
+- the same `claim_uri` twice;
+- the claim's own `identity.uri`;
+- an entry that does not write `required`;
+- children declared both in `child_claims` and in the `metadata.extensions`
+  containment bridge.
+
+Also invalid:
+- child references that cannot be resolved;
+- cyclic references across the claims a composition selects (A names B, B names A), refused by the composer with
+  every claim in the cycle named;
+- hiding child contracts behind product-specific extension blocks.
 
 ## Examples
 
